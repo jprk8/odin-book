@@ -18,13 +18,20 @@ model Post {
   id        Int        @id @default(autoincrement())
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  // title     String   @db.VarChar(255)
+  topic     Topic      @relation(fields: [topicId], references: [id])
+  topicId   Int
   content   String
   published Boolean    @default(false)
   author    User       @relation(fields: [authorId], references: [id])
   authorId  Int
   comments  Comment[]
   likes     PostLike[]
+}
+
+model Topic {
+  id    Int    @id @default(autoincrement())
+  title String @db.VarChar(100)
+  posts Post[]
 }
 
 model PostLike {
