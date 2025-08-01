@@ -76,6 +76,7 @@ model Profile {
 model User {
   id           Int           @id @default(autoincrement())
   username     String        @unique
+  password     String        @db.VarChar(255)
   firstName    String        @db.VarChar(40)
   lastName     String?       @db.VarChar(40)
   posts        Post[]
