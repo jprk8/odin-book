@@ -10,6 +10,10 @@
     <header></header>
     <main>
         <h1>Odin Book</h1>
+        <% if (locals.user) { %>
+            <h2>Logged in as <%= user.username %></h2>
+        <% } %>
+        <a href="/logout">Log out</a>
     </main>
     <footer></footer>
 </body>
