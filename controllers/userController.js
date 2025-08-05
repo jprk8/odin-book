@@ -34,11 +34,30 @@ const validateUser = [
         .withMessage('Passwords do not match')
 ]
 
-function getIndex(req, res) {
-    if (req.isAuthenticated()) {
-        res.render('index', { user: req.user });
-    } else {
-        res.redirect('/login');
+async function getPosts() {
+    return prisma.post.findMany({
+        where: { published: true },
+        orderBy: { createdAt: 'desc' },
+        include: {
+            author: true,
+            topic: true,
+            comments: true,
+            likes: true
+        }
+    });
+}
+
+async function getIndex(req, res) {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const posts = await getPosts();
+        res.render('index', { user: req.user, posts: posts });
+    } catch (err) {
+        console.error('Error loading posts', err);
+        res.status(500).send('Failed to load posts');
     }
 }
 

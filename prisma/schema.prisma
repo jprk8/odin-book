@@ -15,16 +15,17 @@ datasource db {
 }
 
 model Topic {
-  id    Int    @id @default(autoincrement())
-  title String @db.VarChar(100)
-  posts Post[]
+  id           Int    @id @default(autoincrement())
+  title        String @unique @db.VarChar(100)
+  displayTitle String @db.VarChar(100)
+  posts        Post[]
 }
 
 model Post {
   id        Int        @id @default(autoincrement())
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  topic     Topic?      @relation(fields: [topicId], references: [id])
+  topic     Topic?     @relation(fields: [topicId], references: [id])
   topicId   Int?
   content   String
   published Boolean    @default(false)

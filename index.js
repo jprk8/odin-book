@@ -2,6 +2,7 @@ require('dotenv').config();
 const path = require('node:path');
 const express = require('express');
 const userRouter = require('./routes/userRouter');
+const postRouter = require('./routes/postRouter');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const passport = require('./config/passport');
@@ -23,7 +24,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
     }
 }));
 
@@ -38,6 +39,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', userRouter);
+app.use('/post', postRouter);
 
 const PORT = parseInt(process.env.PORT) || 3000;
 app.listen(PORT, () => console.log(`Express app listening on port ${PORT}...`));

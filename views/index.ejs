@@ -5,16 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Odin Book</title>
     <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/index.css">
+    <script src="/util/postModal.js" defer></script>
 </head>
 <body>
-    <header></header>
+    <%- include('nav') %>
     <main>
-        <h1>Odin Book</h1>
-        <% if (locals.user) { %>
-            <h2>Logged in as <%= user.username %></h2>
-        <% } %>
+        <div class="main-header">
+            <a href="/"><h4>For you</h4></a>
+            <a href="/following"><h4>Following</h4></a>
+        </div>
+        <div class="main-content">
+            <div class="new-post-block">
+                <div class="avatar">
+                    <img src="/assets/default-avatar.jpg" alt="" >
+                </div>
+                <input type="text" id="trigger-input" placeholder="What's new?">
+                <button class="post-btn">Post</button>
+            </div>
+            <% posts.forEach((post) => { %>
+                <div class="post-block">
+                    <div class="post-avatar">
+                        <div class="avatar">
+                            <img src="/assets/default-avatar.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="post-main">
+                        <div class="post-header">
+                            <p><strong><%= post.author.username %></strong></p>
+                            <% if (post.topic) { %>
+                                <span><img src="/assets/right-arrow.svg" alt="" width="20px" /></span>
+                                <p><strong><%= post.topic.displayTitle %></strong></p>
+                            <% } %>
+                        </div>
+                        <div class="post-content">
+                            <%= post.content %>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
         <a href="/logout">Log out</a>
     </main>
-    <footer></footer>
+    <%- include('postModal') %>
 </body>
 </html>
