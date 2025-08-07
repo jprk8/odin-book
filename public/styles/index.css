@@ -38,11 +38,15 @@
     align-items: center;
 }
 
+.post-content {
+    white-space: pre-line;
+}
+
 .post-menu {
     display: flex;
     gap: 24px;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 16px;
     color: #bbb;
     font-size: 14px;
 }

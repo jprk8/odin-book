@@ -72,8 +72,15 @@ a {
   text-decoration: none;
 }
 
-input {
+input,
+textarea {
   color: inherit;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+  min-height: 24px;
 }
 
 button:hover {
@@ -204,7 +211,7 @@ nav > .menu {
 }
 
 input[id="topic"],
-input[id="content"] {
+textarea[id="content"] {
   background-color: transparent;
   outline: none;
   border: none;

@@ -9,3 +9,14 @@ navBtn.addEventListener('click', () => {
 closeBtn.addEventListener('click', () => {
     dialog.close();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const textarea = document.getElementById('content');
+    const autoResize = () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    };
+
+    textarea.addEventListener('input', autoResize);
+    autoResize();
+});
