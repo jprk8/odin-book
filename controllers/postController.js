@@ -41,6 +41,53 @@ async function postNewPost(req, res) {
     }
 }
 
+async function postToggleLike(req, res) {
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const userId = req.user.id;
+    const postId = parseInt(req.body.postId);
+
+    try {
+        const liked = await prisma.postLike.findUnique({
+            where: {
+                userId_postId: {
+                    userId,
+                    postId
+                }
+            }
+        });
+
+        if (liked) {
+            await prisma.postLike.delete({
+                where: {
+                    userId_postId: {
+                        userId,
+                        postId
+                    }
+                }
+            });
+        } else {
+            await prisma.postLike.create({
+                data: {
+                    userId,
+                    postId
+                }
+            });
+        }
+
+        const likeCount = await prisma.postLike.count({ where: { postId }});
+        const isLiked = !liked;
+
+        res.json({ likeCount, isLiked });
+    } catch (err) {
+        console.error('Error toggling like:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 module.exports = {
     postNewPost,
+    postToggleLike,
 }

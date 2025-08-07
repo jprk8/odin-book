@@ -38,6 +38,29 @@
     align-items: center;
 }
 
+.post-menu {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-top: 15px;
+    color: #bbb;
+    font-size: 14px;
+}
+
+.post-likes,
+.post-comments {
+    display: flex;
+    gap: 5px;
+}
+
+.like-btn,
+.comment-btn {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    padding: 0;
+}
+
 #trigger-input {
     flex-grow: 1;
     background-color: transparent;

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles/profile.css">
 </head>
 <body>
-    <%- include('nav', { active: (user.id === userData.id) ? 'user' : '' }) %>
+    <%- include('nav', { page: (user.id === userData.id) ? 'user' : '' }) %>
     <main>
         <div class="main-header">
             <h4><%= (user.id === userData.id) ? 'Profile' : userData.username %></h4>

@@ -34,17 +34,29 @@ const validateUser = [
         .withMessage('Passwords do not match')
 ]
 
-async function getPosts() {
-    return prisma.post.findMany({
+async function getPosts(req) {
+    const posts = await prisma.post.findMany({
         where: { published: true },
         orderBy: { createdAt: 'desc' },
         include: {
             author: true,
             topic: true,
             comments: true,
-            likes: true
+            _count: {
+                select: { likes: true }
+            },
+            // this is used to determine isLiked by req.user
+            likes: {
+                where: { userId: req.user?.id || -1 },
+                select: { id: true }
+            }
         }
     });
+
+    return posts.map((post) => ({
+        ...post,
+        isLiked: post.likes.length > 0
+    }));
 }
 
 async function getIndex(req, res) {
@@ -53,7 +65,7 @@ async function getIndex(req, res) {
     }
 
     try {
-        const posts = await getPosts();
+        const posts = await getPosts(req);
         res.render('index', { user: req.user, posts: posts });
     } catch (err) {
         console.error('Error loading posts', err);
@@ -175,7 +187,7 @@ async function postFollow(req, res) {
                 status: 'PENDING'
             }
         });
-        
+
         res.redirect(`/profile/${req.body.followingId}`);
     } catch (err) {
         console.error('Error following user:', err);
