@@ -3,8 +3,8 @@
 :root {
   --bg-color: #0a0a0a;
   --text-color: #f3f5f7;
-  --box-color: #181818;
-  --border-color: #2d2d2d;
+  --box-color: #171717;
+  --border-color: #333;
   font-size: 15px;
 }
 
@@ -84,7 +84,7 @@ main {
   align-self: center;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
   align-items: center;
   width: 100%;
 }
@@ -118,6 +118,10 @@ nav > .menu {
     height: 36px;
     border-radius: 50%;
     overflow: hidden;
+}
+
+.user-link:hover {
+    text-decoration: underline;
 }
 
 .open-modal {
@@ -190,6 +194,7 @@ nav > .menu {
 .modal-main-right {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .modal-topic {
@@ -212,4 +217,14 @@ input[id="content"] {
   justify-content: space-between;
   align-items: center;
   color: #777;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--box-color);
+    width: 100%;
+    max-width: 640px;
+    border-radius: 30px;
+    border: 1px solid var(--border-color);
 }

@@ -91,12 +91,19 @@ model User {
 }
 
 model Follow {
-  id          Int      @id @default(autoincrement())
-  follower    User     @relation("FollowFrom", fields: [followerId], references: [id])
+  id          Int          @id @default(autoincrement())
+  follower    User         @relation("FollowFrom", fields: [followerId], references: [id])
   followerId  Int
-  following   User     @relation("FollowTo", fields: [followingId], references: [id])
+  following   User         @relation("FollowTo", fields: [followingId], references: [id])
   followingId Int
-  createdAt   DateTime @default(now())
+  createdAt   DateTime     @default(now())
+  status      FollowStatus @default(PENDING)
 
   @@unique([followerId, followingId])
+}
+
+enum FollowStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }

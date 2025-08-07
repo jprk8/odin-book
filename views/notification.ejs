@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/notification.css">
+</head>
+<body>
+    <%- include('nav', { active: 'heart' }) %>
+    <main>
+        <div class="main-header">
+            <h4>Follow Requests</h4>
+        </div>
+        <div class="main-content">
+            <% requests.forEach((req) => { %>
+                <div class="req-block">
+                    <div class="avatar">
+                        <img src="/assets/default-avatar.jpg" alt="" />
+                    </div>
+                    <div class="req-block-name">
+                        <strong><%= req.follower.firstName %> <%= req.follower.lastName %></strong>
+                        <a href="/profile/<%= req.follower.id %>" class="user-link">
+                            &#64;<%= req.follower.username %>
+                        </a>
+                    </div>
+                    <form action="/follow/accept" method="POST">
+                        <input type="hidden" name="followerId" value="<%= req.follower.id %>">
+                        <button class="accept">Confirm</button>
+                    </form>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+</body>
+</html>

@@ -25,6 +25,7 @@ input:focus {
     border-radius: 12px;
     padding: 16px;
     font-weight: 600;
+    background-color: #efefef;
 }
 
 .logo {

@@ -13,7 +13,7 @@ const validateUser = [
         .isAlpha().withMessage(`First name ${alphaErr}`)
         .isLength({ min: 1, max: 40 }).withMessage(`First name ${lengthErr}`)
         .customSanitizer((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()),
-    body('lastName').trim()
+    body('lastName').optional({ checkFalsy: true }).trim()
         .isAlpha().withMessage(`Last name ${alphaErr}`)
         .isLength({ min: 1, max: 40 }).withMessage(`Last name ${lengthErr}`)
         .customSanitizer((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()),
@@ -112,6 +112,149 @@ async function handlePostSignup(req, res) {
     }
 }
 
+async function getProfile(req, res) {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const userData = await prisma.user.findUnique({
+            where: { id: parseInt(req.params.id) },
+            include: {
+                posts: true,
+                profile: true,
+                comments: true,
+                followers: {
+                    include: {
+                        follower: true
+                    },
+                    where: {
+                        status: 'ACCEPTED'
+                    }
+                },
+                following: {
+                    include: {
+                        following: true
+                    },
+                    where: {
+                        status: 'ACCEPTED'
+                    }
+                },
+                postLikes: true,
+                commentLikes: true
+            }
+        });
+        const relationship = await prisma.follow.findUnique({
+            where: {
+                followerId_followingId: {
+                    followerId: req.user.id,
+                    followingId: parseInt(req.params.id)
+                }
+            },
+            select: {
+                status: true
+            }
+        });
+        res.render('profile', { user: req.user, userData, relationship });
+    } catch (err) {
+        console.error('Error getting profile', err);
+        res.status(500).send('An error occurred while loading profile');
+    }
+}
+
+async function postFollow(req, res) {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/');
+    }
+
+    try {
+        await prisma.follow.create({
+            data: {
+                followerId: parseInt(req.user.id),
+                followingId: parseInt(req.body.followingId),
+                status: 'PENDING'
+            }
+        });
+        
+        res.redirect(`/profile/${req.body.followingId}`);
+    } catch (err) {
+        console.error('Error following user:', err);
+        res.status(500).send('An error occurred during follow request');
+    }
+}
+
+async function postUnfollow(req, res) {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/');
+    }
+
+    try {
+        await prisma.follow.delete({
+            where: {
+                followerId_followingId: {
+                    followerId: req.user.id,
+                    followingId: parseInt(req.body.followingId),
+                }
+            }
+        });
+
+        res.redirect(`/profile/${req.body.followingId}`);
+    } catch (err) {
+        console.error('Error unfollowing:', err);
+        res.status(500).send('An error occurred during unfollowing');
+    }
+}
+
+async function postFollowAccept(req, res) {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/');
+    }
+
+    try {
+        const result = await prisma.follow.updateMany({
+            where: {
+                followerId: parseInt(req.body.followerId),
+                followingId: req.user.id,
+                status: 'PENDING'
+            },
+            data: {
+                status: 'ACCEPTED'
+            }
+        });
+
+        if (result.count === 0) {
+            return res.status(404).send('Follow request no longer available');
+        }
+
+        res.redirect('/notification');
+    } catch (err) {
+        console.error('Error accepting follow request', err);
+        res.status(500).send('An error occurred during follow request');
+    }
+}
+
+async function getNotification(req, res) {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/');
+    }
+
+    try {
+        const requests = await prisma.follow.findMany({
+            where: {
+                followingId: parseInt(req.user.id),
+                status: 'PENDING'
+            },
+            include: {
+                follower: true
+            }
+        });
+        res.render('notification', { user: req.user, requests: requests });
+    } catch (err) {
+        console.error('Error fetching follow requests:, err');
+        res.status(500).send('An error occurred during loading follow requests');
+    }
+}
+
 module.exports = {
     getIndex,
     getLogin,
@@ -119,4 +262,9 @@ module.exports = {
     getLogout,
     getSignup,
     postSignup: [validateUser, handlePostSignup],
+    getProfile,
+    postFollow,
+    getNotification,
+    postFollowAccept,
+    postUnfollow,
 }

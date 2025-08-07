@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/profile.css">
+</head>
+<body>
+    <%- include('nav', { active: (user.id === userData.id) ? 'user' : '' }) %>
+    <main>
+        <div class="main-header">
+            <h4><%= (user.id === userData.id) ? 'Profile' : userData.username %></h4>
+        </div>
+        <div class="main-content">
+            <div class="profile">
+                <div class="profile-name">
+                    <h2><%= userData.firstName %> <%= userData.lastName %></h2>
+                    <p><%= userData.username %></p>
+                </div>
+                <div class="profile-avatar">
+                    <img src="/assets/default-avatar.jpg" alt="">
+                </div>
+            </div>
+            <div class="bio">
+                <p><%= userData.bio %></p>
+            </div>
+            <div class="profile-links">
+                <div class="followers">
+                    <p><%= userData.followers.length %> followers</p>
+                </div>
+            </div>
+            <div class="profile-menu">
+                <% if (user.id === userData.id) { %>
+                    <button class="edit-profile">Edit profile</button>
+                <% } else if (relationship?.status === 'PENDING') { %>
+                    <div class="req-pending">Follow Requested</div>
+                <% } else if (relationship?.status === 'ACCEPTED') { %>
+                    <form action="/unfollow" method="POST">
+                        <input type="hidden" name="followingId" value="<%= userData.id %>">
+                        <button class="unfollow">Unfollow</button>
+                    </form>
+                <% } else { %>
+                    <form action="/follow" method="POST">
+                        <input type="hidden" name="followingId" value="<%= userData.id %>">
+                        <button class="follow-btn">Follow</button>
+                    </form>
+                <% } %>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

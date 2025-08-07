@@ -1,0 +1,61 @@
+.profile,
+.profile-menu,
+.profile-links {
+    padding: 24px;
+}
+
+.profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-name {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-links {
+    color: #777;
+}
+
+.edit-profile,
+.follow-btn,
+.unfollow,
+.req-pending {
+    border-radius: 10px;
+    outline: none;
+    width: 100%;
+    font-weight: 600;
+    padding: 6px 0;
+    text-align: center;
+}
+
+.edit-profile,
+.unfollow,
+.req-pending {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: inherit;
+}
+
+.follow-btn {
+    background-color: #efefef;
+    border: 1px solid #efefef;
+    color: black;
+}
+
+.req-pending {
+    color: #aaa;
+}
+
+.unfollow {
+    color: rgb(230, 17, 17);
+}

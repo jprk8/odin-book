@@ -9,7 +9,7 @@
     <script src="/util/postModal.js" defer></script>
 </head>
 <body>
-    <%- include('nav') %>
+    <%- include('nav', { active: 'home' }) %>
     <main>
         <div class="main-header">
             <a href="/"><h4>For you</h4></a>
@@ -27,12 +27,14 @@
                 <div class="post-block">
                     <div class="post-avatar">
                         <div class="avatar">
-                            <img src="/assets/default-avatar.jpg" alt="">
+                             <img src="/assets/default-avatar.jpg" alt="" />
                         </div>
                     </div>
                     <div class="post-main">
                         <div class="post-header">
-                            <p><strong><%= post.author.username %></strong></p>
+                            <a href="/profile/<%= post.author.id %>" class="user-link">
+                                <strong><%= post.author.username %></strong>
+                            </a>
                             <% if (post.topic) { %>
                                 <span><img src="/assets/right-arrow.svg" alt="" width="20px" /></span>
                                 <p><strong><%= post.topic.displayTitle %></strong></p>

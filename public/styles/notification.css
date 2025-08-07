@@ -1,0 +1,32 @@
+.req-block {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    border-top: 1px solid var(--border-color);
+}
+
+.req-block:first-of-type {
+    border-top: none;
+}
+
+.req-block-name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    flex-grow: 1;
+}
+
+.req-block-name > a {
+    color: #aaa;
+}
+
+button.accept {
+    background-color: #efefef;
+    font-weight: 600;
+    outline: none;
+    border: 1px solid #efefef;
+    padding: 6px 14px;
+    border-radius: 12px;
+}
