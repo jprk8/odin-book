@@ -226,6 +226,11 @@ textarea[id="content"] {
   color: #777;
 }
 
+.main-header {
+    display: flex;
+    gap: 50px;
+}
+
 .main-content {
     display: flex;
     flex-direction: column;
@@ -234,4 +239,27 @@ textarea[id="content"] {
     max-width: 640px;
     border-radius: 30px;
     border: 1px solid var(--border-color);
+}
+
+.post-menu {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-top: 12px;
+    color: #bbb;
+    font-size: 14px;
+}
+
+.post-likes,
+.post-comments {
+    display: flex;
+    gap: 5px;
+}
+
+.like-btn,
+.comment-btn {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    padding: 0;
 }

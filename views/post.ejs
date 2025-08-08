@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/post.css">
+</head>
+<body>
+    <%- include('nav', { page: '' }) %>
+    <main>
+        <div class="main-header">
+            <h4>Thread</h4>
+        </div>
+        <div class="main-content">
+            <div class="post-view">
+                <div class="post-view-header">
+                    <div class="avatar">
+                        <img src="/assets/default-avatar.jpg" alt="" />
+                    </div>
+                    <p><strong><%= post.author.username %></strong></p>
+                </div>
+                <div class="post-view-content"><p><%= post.content %></p></div>
+                <div class="post-menu">
+                    <div class="post-likes">
+                        <button class="like-btn">
+                            <img src="/assets/heart<%= post.isLiked ? '-red' : '-outline-light' %>.svg" alt="" width="20px">
+                        </button>
+                        <p class="like-count"><%= post._count.likes %></p>
+                    </div>
+                    <div class="post-comments">
+                        <button class="comment-btn">
+                            <img src="/assets/comment.svg" alt="" width="20px">
+                        </button>
+                        <p class="comments-count"><%= post.comments.length %></p>
+                    </div>
+                </div>
+                <div class="comments-header">
+                    <p><strong>Comments</strong></p>
+                    <form action="/comment">
+                        <button type="submit" class="reply-btn">Reply</button>
+                    </form>
+                </div>
+                <% post.comments.forEach((comment) => { %>
+                    <div class="post-block" data-post-id="<%= comment.id %>">
+                        <div class="post-avatar">
+                            <div class="avatar">
+                                <img src="/assets/default-avatar.jpg" alt="" />
+                            </div>
+                        </div>
+                        <div class="post-main">
+                            <div class="post-header">
+                                <a href="/profile/<%= comment.author.id %>" class="user-link">
+                                    <strong><%= comment.author.username %></strong>
+                                </a>
+                            </div>
+                            <div class="post-content"><%= comment.content %></div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -26,6 +26,7 @@
             </div>
             <% posts.forEach((post) => { %>
                 <div class="post-block" data-post-id="<%= post.id %>">
+                    <a href="/posts/<%= post.id %>" class="post-link" aria-label="View post"></a>
                     <div class="post-avatar">
                         <div class="avatar">
                              <img src="/assets/default-avatar.jpg" alt="" />
@@ -53,7 +54,7 @@
                                 <button class="comment-btn">
                                     <img src="/assets/comment.svg" alt="" width="20px">
                                 </button>
-                                <p class="comment-count"><%= post.comments.length %></p>
+                                <p class="comments-count"><%= post.comments.length %></p>
                             </div>
                         </div>
                     </div>
