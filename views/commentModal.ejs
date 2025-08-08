@@ -1,0 +1,46 @@
+<dialog id="comment-modal">
+    <form action="/posts/newcomment" method="POST">
+        <div class="modal-header">
+            <button type="button" class="close-comment-modal">Cancel</button>
+            <p>Reply</p>
+            <div class="header-options">
+                <img src="/assets/options.svg" alt="" width="24px"/>
+            </div>
+        </div>
+        <div class="modal-main">
+            <div class="modal-main-left">
+                <div class="avatar">
+                    <img src="/assets/default-avatar.jpg" alt="">
+                </div>
+            </div>
+            <div class="modal-main-right">
+                <div class="modal-topic">
+                    <p><strong><%= post.author.username %></strong></p>
+                    <% if (post.topic) { %>
+                        <span><img src="/assets/right-arrow.svg" alt="" width="20px" /></span>
+                        <p><strong><%= post.topic.displayTitle %></strong></p>
+                    <% } %>
+                </div>
+                <p><%= post.content %></p>
+            </div>
+        </div>
+        <div class="modal-main">
+            <div class="modal-main-left">
+                <div class="avatar">
+                    <img src="/assets/default-avatar.jpg" alt="">
+                </div>
+            </div>
+            <div class="modal-main-right">
+                <div class="modal-topic">
+                    <p><strong><%= user.username %></strong></p>
+                </div>
+                <input type="hidden" name="postId" value="<%= post.id %>">
+                <textarea id="content" name="content" placeholder="Reply to <%= post.author.username %>..." rows="1" maxlength="500"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p>Anyone can reply & quote</p>
+            <button type="submit" class="post-btn">Post</button>
+        </div>
+    </form>
+</dialog>

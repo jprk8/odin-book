@@ -50,13 +50,3 @@
     border: none;
     outline: none;
 }
-
-.post-btn {
-    background-color: transparent;
-    margin: 0;
-    padding: 10px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    color: var(--text-color);
-    font-weight: 600;
-}

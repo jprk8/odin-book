@@ -1,21 +1,27 @@
 <nav>
     <div class="logo">&#64;</div>
-    <div class="menu">
+    <div class="nav-menu">
         <a href="/">
-            <img src="/assets/<%= page === "home" ? "home" : "home-outline" %>.svg" alt="" width="30px" />
+            <img src="/assets/<%= page === "home" ? "home" : "home-outline" %>.svg" alt="" height="30px" />
         </a>
-        <img src="/assets/<%= page === "search" ? "search" : "search-outline" %>.svg" alt="" width="30px" />
-        <div class="open-modal">
+        <img src="/assets/<%= page === "search" ? "search" : "search-outline" %>.svg" alt="" height="30px" />
+        <div class="new-post-btn">
             <img src="/assets/add.svg" alt="" width="30px">
         </div>
         <a href="/notification">
-            <img src="/assets/<%= page === "heart" ? "heart" : "heart-outline" %>.svg" alt="" width="30px" />
+            <img src="/assets/<%= page === "heart" ? "heart" : "heart-outline" %>.svg" alt="" height="30px" />
         </a>
         <a href="/profile/<%= user.id %>">
-            <img src="/assets/<%= page === "user" ? "user" : "user-outline" %>.svg" alt="" width="30px" />
+            <img src="/assets/<%= page === "user" ? "user" : "user-outline" %>.svg" alt="" height="30px" />
         </a>
     </div>
     <div class="drawer">
         <img src="/assets/drawer.svg" alt="" width="30px">
     </div>
 </nav>
+
+<script>
+    window.addEventListener('load', () => {
+        document.querySelector('.nav-menu').classList.add('loaded');
+    });
+</script>

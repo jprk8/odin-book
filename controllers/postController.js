@@ -1,7 +1,19 @@
 const { PrismaClient } = require('../generated/prisma');
 const prisma = new PrismaClient();
+const { body, validationResult } = require('express-validator');
 
-async function postNewPost(req, res) {
+const validateContent = [
+    body('content').trim()
+        .isLength({ min: 1, max: 500 })
+        .withMessage('Content must be 1-500 characters.'),
+]
+
+async function handleNewPost(req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.render('index', { errors: errors.array() });
+    }
+
     if (!req.isAuthenticated()) {
         return res.status(401).send('Not authenticated');
     }
@@ -38,6 +50,36 @@ async function postNewPost(req, res) {
     } catch (err) {
         console.error('Error creating post:', err);
         res.status(500).send('An error occurred during post creation');
+    }
+}
+
+async function handleNewComment(req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.render('index', { errors: errors.array() });
+    }
+
+    if (!req.isAuthenticated()) {
+        return res.status(401).send('Not authenticated');
+    }
+
+    try {
+        const data = {
+            content: req.body.content,
+            author: {
+                connect: { id: req.user.id }
+            },
+            post: {
+                connect: { id: parseInt(req.body.postId) }
+            }
+        };
+
+        await prisma.comment.create({ data });
+        console.log('Comment created');
+        res.redirect(`/posts/${req.body.postId}`);
+    } catch (err) {
+        console.error('Error creating comment:', err);
+        res.status(500).json({ error: 'Error creating comment' });
     }
 }
 
@@ -131,7 +173,8 @@ async function getPost(req, res) {
 }
 
 module.exports = {
-    postNewPost,
+    postNewPost: [validateContent, handleNewPost],
+    postNewComment: [validateContent, handleNewComment],
     postToggleLike,
     getPost,
 }

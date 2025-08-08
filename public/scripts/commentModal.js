@@ -1,8 +1,8 @@
-const dialog = document.getElementById('post-modal');
-const navBtn = document.querySelector('.new-post-btn');
-const closeBtn = document.querySelector('.close-modal');
+const dialog = document.getElementById('comment-modal');
+const replyBtn = document.querySelector('.reply-btn');
+const closeBtn = document.querySelector('.close-comment-modal');
 
-navBtn.addEventListener('click', () => {
+replyBtn.addEventListener('click', () => {
     dialog.showModal();
 });
 

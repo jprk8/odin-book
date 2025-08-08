@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Thread</title>
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/post.css">
+    <script src="/scripts/commentModal.js" defer></script>
 </head>
 <body>
     <%- include('nav', { page: '' }) %>
@@ -20,6 +21,10 @@
                         <img src="/assets/default-avatar.jpg" alt="" />
                     </div>
                     <p><strong><%= post.author.username %></strong></p>
+                    <% if (post.topic) { %>
+                        <span><img src="/assets/right-arrow.svg" alt="" width="20px" /></span>
+                        <p><strong><%= post.topic.displayTitle %></strong></p>
+                    <% } %>
                 </div>
                 <div class="post-view-content"><p><%= post.content %></p></div>
                 <div class="post-menu">
@@ -38,29 +43,30 @@
                 </div>
                 <div class="comments-header">
                     <p><strong>Comments</strong></p>
-                    <form action="/comment">
-                        <button type="submit" class="reply-btn">Reply</button>
-                    </form>
+                    <button class="reply-btn">Reply</button>
                 </div>
-                <% post.comments.forEach((comment) => { %>
-                    <div class="post-block" data-post-id="<%= comment.id %>">
-                        <div class="post-avatar">
-                            <div class="avatar">
-                                <img src="/assets/default-avatar.jpg" alt="" />
+                <div class="comments">
+                    <% post.comments.forEach((comment) => { %>
+                        <div class="post-block" data-post-id="<%= comment.id %>">
+                            <div class="post-avatar">
+                                <div class="avatar">
+                                    <img src="/assets/default-avatar.jpg" alt="" />
+                                </div>
+                            </div>
+                            <div class="post-main">
+                                <div class="post-header">
+                                    <a href="/profile/<%= comment.author.id %>" class="user-link">
+                                        <strong><%= comment.author.username %></strong>
+                                    </a>
+                                </div>
+                                <div class="post-content"><%= comment.content %></div>
                             </div>
                         </div>
-                        <div class="post-main">
-                            <div class="post-header">
-                                <a href="/profile/<%= comment.author.id %>" class="user-link">
-                                    <strong><%= comment.author.username %></strong>
-                                </a>
-                            </div>
-                            <div class="post-content"><%= comment.content %></div>
-                        </div>
-                    </div>
-                <% }) %>
+                    <% }) %>
+                </div>
             </div>
         </div>
     </main>
+    <%- include('commentModal', { post }) %>
 </body>
 </html>

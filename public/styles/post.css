@@ -17,8 +17,12 @@
 
 .post-view-header {
     display: flex;
-    gap: 12px;
+    gap: 0;
     align-items: center;
+}
+
+.post-view-header > .avatar {
+    margin-right: 12px;
 }
 
 .post-view-content {
@@ -34,11 +38,14 @@
 }
 
 .comments-header {
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
 }
 
 .reply-btn {
@@ -46,7 +53,8 @@
     border-radius: 10px;
     padding: 6px 16px;
     font-weight: 600;
-    border: 1px solid #777;
+    border: 1px solid var(--border-color);
     background-color: transparent;
     color: inherit;
+    outline: none;
 }

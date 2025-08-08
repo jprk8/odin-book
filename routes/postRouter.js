@@ -5,5 +5,6 @@ const postRouter = Router();
 postRouter.post('/newpost', postController.postNewPost);
 postRouter.post('/toggle-like', postController.postToggleLike);
 postRouter.get('/:id', postController.getPost);
+postRouter.post('/newcomment', postController.postNewComment);
 
 module.exports = postRouter;
