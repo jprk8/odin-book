@@ -3,6 +3,7 @@ const userController = require('../controllers/userController');
 const userRouter = Router();
 
 userRouter.get('/', userController.getIndex);
+userRouter.get('/following', userController.getFollowingIndex);
 userRouter.get('/login', userController.getLogin);
 userRouter.post('/login', userController.postLogin);
 userRouter.get('/logout', userController.getLogout);

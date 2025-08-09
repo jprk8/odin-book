@@ -13,8 +13,8 @@
     <%- include('nav', { page: 'home' }) %>
     <main>
         <div class="main-header">
-            <a href="/"><h4>For you</h4></a>
-            <a href="/following"><h4>Following</h4></a>
+            <a href="/" class="switch <%= (locals.following) ? '' : 'active' %>">For you</a>
+            <a href="/following" class="switch <%= (locals.following) ? 'active' : '' %>">Following</a>
         </div>
         <div class="main-content">
             <div class="new-post-block">
@@ -54,7 +54,7 @@
                                 <button class="comment-btn">
                                     <img src="/assets/comment.svg" alt="" width="20px">
                                 </button>
-                                <p class="comments-count"><%= post.comments.length %></p>
+                                <p class="comments-count"><%= post._count.comments %></p>
                             </div>
                         </div>
                     </div>

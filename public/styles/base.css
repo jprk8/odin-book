@@ -24,7 +24,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   min-height: 100vh;
-  display: flex;
+  /* display: flex; */
 }
 
 img, picture, video, canvas, svg {
@@ -88,12 +88,12 @@ button:hover {
 }
 
 main {
-  align-self: center;
+  /* align-self: center; */
   display: flex;
   flex-direction: column;
-  gap: 20px;
   align-items: center;
   width: 100%;
+  padding: 20px 0;
 }
 
 nav {
@@ -103,6 +103,7 @@ nav {
   justify-content: space-between;
   padding: 10px;
   padding-bottom: 30px;
+  width: 82px;
   position: fixed;
   height: 100vh;
 }
@@ -148,6 +149,131 @@ nav > .logo {
 .new-post-btn:hover {
   cursor: pointer;
   filter: brightness(2);
+}
+
+.main-header {
+  position: sticky;
+  top: 16px;
+  background-color: var(--bg-color);
+  z-index: 9999;
+  border-radius: 32px;
+  display: flex;
+  gap: 8px;
+  place-items: center;
+}
+
+.switch,
+.non-switch {
+  padding: 4px 18px;
+  color: #777;
+  font-weight: 600;
+}
+
+.non-switch {
+  color: var(--text-color);
+}
+
+.switch.active {
+  border-radius: 32px;
+  background-color: #ddd;
+  color: black;
+}
+
+.main-content {
+    background-color: var(--box-color);
+    width: 100%;
+    max-width: 640px;
+    border-radius: 30px;
+    border: 1px solid var(--border-color);
+    margin: 20px 0;
+}
+
+.post-menu {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-top: 12px;
+    color: #bbb;
+    font-size: 14px;
+}
+
+.post-likes,
+.post-comments {
+    display: flex;
+    gap: 5px;
+}
+
+.like-btn,
+.comment-btn {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    padding: 0;
+}
+
+.post-btn {
+    background-color: transparent;
+    margin: 0;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.new-post-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 24px;
+    padding-bottom: 15px;
+    width: 100%;
+    max-width: 640px;
+}
+
+.post-block {
+    padding: 16px 24px;
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid var(--border-color);
+    position: relative;
+}
+
+.post-block .post-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.post-block button,
+.post-block a:not(.post-link) {
+    position: relative;
+    z-index: 2;
+}
+
+.post-block:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.post-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+}
+
+.post-content {
+    white-space: pre-line;
+}
+
+#trigger-input {
+    flex-grow: 1;
+    background-color: transparent;
+    border: none;
+    outline: none;
 }
 
 #post-modal,
@@ -244,105 +370,4 @@ textarea[id="content"] {
   justify-content: space-between;
   align-items: center;
   color: #777;
-}
-
-.main-header {
-    display: flex;
-    gap: 50px;
-}
-
-.main-content {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--box-color);
-    width: 100%;
-    max-width: 640px;
-    border-radius: 30px;
-    border: 1px solid var(--border-color);
-}
-
-.post-menu {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-    margin-top: 12px;
-    color: #bbb;
-    font-size: 14px;
-}
-
-.post-likes,
-.post-comments {
-    display: flex;
-    gap: 5px;
-}
-
-.like-btn,
-.comment-btn {
-    background-color: transparent;
-    outline: none;
-    border: none;
-    padding: 0;
-}
-
-.post-btn {
-    background-color: transparent;
-    margin: 0;
-    padding: 10px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-.new-post-block {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 20px 24px;
-    padding-bottom: 15px;
-}
-
-.post-block {
-    padding: 16px 24px;
-    display: flex;
-    gap: 12px;
-    border-top: 1px solid var(--border-color);
-    position: relative;
-}
-
-.post-block .post-link {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-}
-
-.post-block button,
-.post-block a:not(.post-link) {
-    position: relative;
-    z-index: 2;
-}
-
-.post-block:hover {
-  background-color: rgba(255, 255, 255, 0.03);
-}
-
-.post-main {
-    display: flex;
-    flex-direction: column;
-}
-
-.post-header {
-    display: flex;
-    align-items: center;
-}
-
-.post-content {
-    white-space: pre-line;
-}
-
-#trigger-input {
-    flex-grow: 1;
-    background-color: transparent;
-    border: none;
-    outline: none;
 }

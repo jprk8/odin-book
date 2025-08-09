@@ -11,7 +11,9 @@
     <%- include('nav', { page: (user.id === userData.id) ? 'user' : '' }) %>
     <main>
         <div class="main-header">
-            <h4><%= (user.id === userData.id) ? 'Profile' : userData.username %></h4>
+            <div class="non-switch">
+                <p><%= (user.id === userData.id) ? 'Profile' : userData.username %></p>
+            </div>
         </div>
         <div class="main-content">
             <div class="profile">

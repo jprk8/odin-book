@@ -41,9 +41,8 @@ async function getPosts(req) {
         include: {
             author: true,
             topic: true,
-            comments: true,
             _count: {
-                select: { likes: true }
+                select: { likes: true, comments: true }
             },
             // this is used to determine isLiked by req.user
             likes: {
@@ -59,9 +58,40 @@ async function getPosts(req) {
     }));
 }
 
+async function getFollowingPosts(req) {
+    const posts = await prisma.post.findMany({
+        where: {
+            published: true,
+            author: {
+                followers: {
+                    some: { followerId: req.user.id, status: 'ACCEPTED' },
+                },
+            },
+        },
+        orderBy: { createdAt: 'desc' },
+        include: {
+            author: true,
+            topic: true,
+            _count: {
+                select: { likes: true, comments: true }
+            },
+            likes: {
+                where: { userId: req.user?.id || -1 },
+                select: { id: true },
+                take: 1,
+            }
+        }
+    });
+
+    return posts.map((post) => ({
+        ...post,
+        isLiked: post.likes.length > 0
+    }));
+}
+
 async function getIndex(req, res) {
     if (!req.isAuthenticated()) {
-        return res.redirect('/login');
+        return res.redirect('/');
     }
 
     try {
@@ -69,7 +99,21 @@ async function getIndex(req, res) {
         res.render('index', { user: req.user, posts: posts });
     } catch (err) {
         console.error('Error loading posts', err);
-        res.status(500).send('Failed to load posts');
+        res.status(500).json({ error: 'Failed to load posts' });
+    }
+}
+
+async function getFollowingIndex(req, res) {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/');
+    }
+
+    try {
+        const posts = await getFollowingPosts(req);
+        res.render('index', { user: req.user, posts: posts, following: true });
+    } catch (err) {
+        console.error('Error loading following posts:', err);
+        res.status(500).json({ error: 'Failed to load following posts ' });
     }
 }
 
@@ -137,20 +181,12 @@ async function getProfile(req, res) {
                 profile: true,
                 comments: true,
                 followers: {
-                    include: {
-                        follower: true
-                    },
-                    where: {
-                        status: 'ACCEPTED'
-                    }
+                    include: { follower: true },
+                    where: { status: 'ACCEPTED' }
                 },
                 following: {
-                    include: {
-                        following: true
-                    },
-                    where: {
-                        status: 'ACCEPTED'
-                    }
+                    include: { following: true },
+                    where: { status: 'ACCEPTED' }
                 },
                 postLikes: true,
                 commentLikes: true
@@ -269,6 +305,7 @@ async function getNotification(req, res) {
 
 module.exports = {
     getIndex,
+    getFollowingIndex,
     getLogin,
     postLogin,
     getLogout,
