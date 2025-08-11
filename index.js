@@ -42,6 +42,9 @@ app.use((req, res, next) => {
 
 app.use('/', userRouter);
 app.use('/posts', postRouter);
+app.use((req, res) => {
+    res.redirect('/login');
+});
 
 const PORT = parseInt(process.env.PORT) || 3000;
 app.listen(PORT, () => console.log(`Express app listening on port ${PORT}...`));

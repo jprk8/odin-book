@@ -1,27 +1,85 @@
+<style>
+    nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 0 30px 0;
+        position: fixed;
+        height: 100vh;
+        width: 75px;
+    }
+
+    .nav-menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        visibility: hidden;
+        opacity: 0.5;
+        transition: opacity 0.2s ease-in;
+    }
+
+    .nav-menu.loaded {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .new-post-btn {
+        background-color: rgb(255, 255, 255, 0.08);
+        padding: 12px 18px;
+        border-radius: 12px;
+    }
+
+    .new-post-btn:hover {
+        cursor: pointer;
+        filter: brightness(2);
+    }
+
+    .nav-menu > a {
+        padding: 12px 18px;
+        background-color: rgb(255, 255, 255, 0);
+    }
+
+    .nav-menu > a:hover {
+        background-color: rgb(255, 255, 255, 0.08);
+        border-radius: 12px;
+        transition: background-color 0.2s ease-in;
+    }
+
+</style>
+
 <nav>
-    <div class="logo">&#64;</div>
+    <a href="/" class="logo">
+        <img src="/assets/logo.svg" alt="" height="34px">
+    </a>
     <div class="nav-menu">
-        <a href="/">
-            <img src="/assets/<%= page === "home" ? "home" : "home-outline" %>.svg" alt="" height="30px" />
+        <a href="/" class="home-btn">
+            <img src="/assets/<%= page === "home" ? "home-fill" : "home" %>.svg" alt="" height="24px" />
         </a>
-        <img src="/assets/<%= page === "search" ? "search" : "search-outline" %>.svg" alt="" height="30px" />
+        <a href="/search">
+            <img src="/assets/<%= page === "search" ? "search-fill" : "search" %>.svg" alt="" height="24px" />
+        </a>
         <div class="new-post-btn">
-            <img src="/assets/add.svg" alt="" width="30px">
+            <img src="/assets/add.svg" alt="" height="24px" width="auto">
         </div>
-        <a href="/notification">
-            <img src="/assets/<%= page === "heart" ? "heart" : "heart-outline" %>.svg" alt="" height="30px" />
+        <a href="/notification" class="notification-btn">
+            <img src="/assets/<%= page === "heart" ? "heart-fill" : "heart" %>.svg" alt="" height="24px" />
         </a>
-        <a href="/profile/<%= user.id %>">
-            <img src="/assets/<%= page === "user" ? "user" : "user-outline" %>.svg" alt="" height="30px" />
+        <a href="/profile/<%= user.id %>" class="profile-btn">
+            <img src="/assets/<%= page === "user" ? "user-fill" : "user" %>.svg" alt="" height="24px" />
         </a>
     </div>
     <div class="drawer">
-        <img src="/assets/drawer.svg" alt="" width="30px">
+        <img src="/assets/drawer.svg" alt="" height="24px">
     </div>
 </nav>
 
 <script>
-    window.addEventListener('load', () => {
+    document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.nav-menu').classList.add('loaded');
     });
 </script>
+
+<%- include('postModal') %>
+<script src="/scripts/postModal.js" defer></script>

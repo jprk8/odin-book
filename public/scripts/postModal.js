@@ -1,13 +1,15 @@
-const dialog = document.getElementById('post-modal');
+const postDialog = document.getElementById('post-modal');
 const navBtn = document.querySelector('.new-post-btn');
-const closeBtn = document.querySelector('.close-modal');
+const closePostModal = document.querySelector('.close-post-modal');
+const redirectUrl = document.getElementById('redirectUrl');
 
 navBtn.addEventListener('click', () => {
-    dialog.showModal();
+    redirectUrl.value = location.pathname + location.search + location.hash;
+    postDialog.showModal();
 });
 
-closeBtn.addEventListener('click', () => {
-    dialog.close();
+closePostModal.addEventListener('click', () => {
+    postDialog.close();
 });
 
 document.addEventListener('DOMContentLoaded', () => {

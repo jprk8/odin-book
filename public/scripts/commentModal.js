@@ -1,13 +1,13 @@
-const dialog = document.getElementById('comment-modal');
+const commentDialog = document.getElementById('comment-modal');
 const replyBtn = document.querySelector('.reply-btn');
-const closeBtn = document.querySelector('.close-comment-modal');
+const closeCommentModal = document.querySelector('.close-comment-modal');
 
 replyBtn.addEventListener('click', () => {
-    dialog.showModal();
+    commentDialog.showModal();
 });
 
-closeBtn.addEventListener('click', () => {
-    dialog.close();
+closeCommentModal.addEventListener('click', () => {
+    commentDialog.close();
 });
 
 document.addEventListener('DOMContentLoaded', () => {

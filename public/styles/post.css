@@ -1,23 +1,16 @@
 .post-view {
-    padding: 24px 0;
-}
-
-.post-view-header,
-.post-view-content,
-.post-menu,
-.comments-header {
-    padding: 0 24px;
-}
-
-.post-view {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 24px 24px 0 24px;
+}
+
+.comments-header {
+    padding: 10px 24px;
 }
 
 .post-view-header {
     display: flex;
-    gap: 0;
     align-items: center;
 }
 
@@ -30,11 +23,12 @@
     padding-bottom: 5px;
 }
 
-.post-menu {
+.post-view-menu {
+    display: flex;
+    gap: 24px;
+    align-items: center;
     border-bottom: 1px solid var(--border-color);
-    margin: 0 24px;
-    padding: 0;
-    padding-bottom: 12px;
+    padding-bottom: 8px;
 }
 
 .comments-header {
@@ -57,4 +51,11 @@
     background-color: transparent;
     color: inherit;
     outline: none;
+}
+
+.comment-likes,
+.comment-comments {
+    display: flex;
+    gap: 6px;
+    align-items: center;
 }

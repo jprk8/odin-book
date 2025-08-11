@@ -9,34 +9,34 @@
 </head>
 <body>
     <main>
-        <div class="logo">&#64;</div>
-        <h4>Sign up to join the discussion</h4>
-        <% if (locals.errors) { %>
-            <ul>
-                <% errors.forEach((error) => { %>
-                    <li><%= error.msg %></li>
-                <% }) %>
-            </ul>
-        <% } %>
-        <form action="/signup" method="POST" class="signup-form">
-            <label for="firstName" class="hidden-label">First name</label>
-            <input type="text" id="firstName" name="firstName" placeholder="First name" required />
-
-            <label for="lastName" class="hidden-label">Last name</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Last name (optional)" />
-
-            <label for="username" class="hidden-label">Username</label>
-            <input type="text" id="username" name="username" placeholder="Username" required />
-
-            <label for="password" class="hidden-label">Password</label>
-            <input type="password" id="password" name="password" placeholder="Password" required />
-        
-            <label for="confirmPassword" class="hidden-label">Confirm password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required />
-
-            <button type="submit" class="signup-btn">Sign up</button>
-        </form>
-        <a href="/">Cancel</a>
+        <div class="user-form">
+            <div class="logo">
+                <img src="/assets/logo.svg" alt="" height="64px">
+            </div>
+            <h4>Sign up to join the discussion</h4>
+            <% if (locals.errors) { %>
+                <ul>
+                    <% errors.forEach((error) => { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            <% } %>
+            <form action="/signup" method="POST" class="signup-form">
+                <label for="firstName" class="hidden-label">First name</label>
+                <input type="text" id="firstName" name="firstName" placeholder="First name" required />
+                <label for="lastName" class="hidden-label">Last name</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Last name (optional)" />
+                <label for="username" class="hidden-label">Username</label>
+                <input type="text" id="username" name="username" placeholder="Username" required />
+                <label for="password" class="hidden-label">Password</label>
+                <input type="password" id="password" name="password" placeholder="Password" required />
+            
+                <label for="confirmPassword" class="hidden-label">Confirm password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required />
+                <button type="submit" class="signup-btn">Sign up</button>
+            </form>
+            <a href="/login">Cancel</a>
+        </div>
     </main>
 </body>
 </html>

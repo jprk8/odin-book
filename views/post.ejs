@@ -7,65 +7,82 @@
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/post.css">
     <script src="/scripts/commentModal.js" defer></script>
+    <script src="/scripts/likeBtn.js" defer></script>
 </head>
 <body>
     <%- include('nav', { page: '' }) %>
     <main>
         <div class="main-header">
             <div class="non-switch">
-                <h4>Thread</h4>
+                <p>Thread</p>
             </div>
         </div>
         <div class="main-content">
-            <div class="post-view">
+            <div class="post-view" data-post-id="<%= post.id %>">
                 <div class="post-view-header">
                     <div class="avatar">
                         <img src="/assets/default-avatar.jpg" alt="" />
                     </div>
-                    <p><strong><%= post.author.username %></strong></p>
+                    <a href="/profile/<%= post.author.id %>" class="user-link">
+                        <p><strong><%= post.author.username %></strong></p>
+                    </a>
                     <% if (post.topic) { %>
                         <span><img src="/assets/right-arrow.svg" alt="" width="20px" /></span>
                         <p><strong><%= post.topic.displayTitle %></strong></p>
                     <% } %>
                 </div>
                 <div class="post-view-content"><p><%= post.content %></p></div>
-                <div class="post-menu">
+                <div class="post-view-menu">
                     <div class="post-likes">
                         <button class="like-btn">
-                            <img src="/assets/heart<%= post.isLiked ? '-red' : '-outline-light' %>.svg" alt="" width="20px">
+                            <img src="/assets/heart<%= post.isLiked ? '-red' : '-light' %>.svg" alt="" width="18px">
                         </button>
                         <p class="like-count"><%= post._count.likes %></p>
                     </div>
                     <div class="post-comments">
                         <button class="comment-btn">
-                            <img src="/assets/comment.svg" alt="" width="20px">
+                            <img src="/assets/comment.svg" alt="" width="18px">
                         </button>
                         <p class="comments-count"><%= post.comments.length %></p>
                     </div>
                 </div>
+            </div>
+            <div class="comments">
                 <div class="comments-header">
                     <p><strong>Comments</strong></p>
                     <button class="reply-btn">Reply</button>
                 </div>
-                <div class="comments">
-                    <% post.comments.forEach((comment) => { %>
-                        <div class="post-block" data-post-id="<%= comment.id %>">
-                            <div class="post-avatar">
-                                <div class="avatar">
-                                    <img src="/assets/default-avatar.jpg" alt="" />
-                                </div>
-                            </div>
-                            <div class="post-main">
-                                <div class="post-header">
-                                    <a href="/profile/<%= comment.author.id %>" class="user-link">
-                                        <strong><%= comment.author.username %></strong>
-                                    </a>
-                                </div>
-                                <div class="post-content"><%= comment.content %></div>
+                <% post.comments.forEach((comment) => { %>
+                    <div class="post-block comment" data-comment-id="<%= comment.id %>">
+                        <div class="post-avatar">
+                            <div class="avatar">
+                                <img src="/assets/default-avatar.jpg" alt="" />
                             </div>
                         </div>
-                    <% }) %>
-                </div>
+                        <div class="post-main">
+                            <div class="post-header">
+                                <a href="/profile/<%= comment.author.id %>" class="user-link">
+                                    <strong><%= comment.author.username %></strong>
+                                </a>
+                            </div>
+                            <div class="post-content"><%= comment.content %></div>
+                            <div class="post-menu">
+                                <div class="comment-likes">
+                                    <button class="comment-like-btn">
+                                        <img src="/assets/heart-light.svg" alt="" width="18px">
+                                    </button>
+                                    <p class="comment-like-count"><%= comment._count.likes %></p>
+                                </div>
+                                <div class="comment-comments">
+                                    <button class="comment-comment-btn">
+                                        <img src="/assets/comment.svg" alt="" width="18px" />
+                                    </button>
+                                    <p class="comment-comments-count">Missing field</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
             </div>
         </div>
     </main>

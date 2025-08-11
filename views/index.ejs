@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Odin Book</title>
     <link rel="stylesheet" href="/styles/base.css">
-    <link rel="stylesheet" href="/styles/index.css">
-    <script src="/scripts/postModal.js" defer></script>
     <script src="/scripts/likeBtn.js" defer></script>
 </head>
 <body>
@@ -46,13 +44,13 @@
                         <div class="post-menu">
                             <div class="post-likes">
                                 <button class="like-btn">
-                                    <img src="/assets/heart<%= post.isLiked ? '-red' : '-outline-light' %>.svg" alt="" width="20px">
+                                    <img src="/assets/heart<%= post.isLiked ? '-red' : '-light' %>.svg" alt="" width="18px">
                                 </button>
                                 <p class="like-count"><%= post._count.likes %></p>
                             </div>
                             <div class="post-comments">
                                 <button class="comment-btn">
-                                    <img src="/assets/comment.svg" alt="" width="20px">
+                                    <img src="/assets/comment.svg" alt="" width="18px" />
                                 </button>
                                 <p class="comments-count"><%= post._count.comments %></p>
                             </div>
@@ -63,6 +61,5 @@
         </div>
         <a href="/logout">Log out</a>
     </main>
-    <%- include('postModal') %>
 </body>
 </html>

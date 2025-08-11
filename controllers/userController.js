@@ -91,7 +91,7 @@ async function getFollowingPosts(req) {
 
 async function getIndex(req, res) {
     if (!req.isAuthenticated()) {
-        return res.redirect('/');
+        return res.redirect('/login');
     }
 
     try {
@@ -105,7 +105,7 @@ async function getIndex(req, res) {
 
 async function getFollowingIndex(req, res) {
     if (!req.isAuthenticated()) {
-        return res.redirect('/');
+        return res.redirect('/login');
     }
 
     try {
@@ -212,7 +212,7 @@ async function getProfile(req, res) {
 
 async function postFollow(req, res) {
     if (!req.isAuthenticated()) {
-        return res.redirect('/');
+        return res.redirect('/login');
     }
 
     try {
@@ -233,7 +233,7 @@ async function postFollow(req, res) {
 
 async function postUnfollow(req, res) {
     if (!req.isAuthenticated()) {
-        return res.redirect('/');
+        return res.redirect('/login');
     }
 
     try {
@@ -255,7 +255,7 @@ async function postUnfollow(req, res) {
 
 async function postFollowAccept(req, res) {
     if (!req.isAuthenticated()) {
-        return res.redirect('/');
+        return res.redirect('/login');
     }
 
     try {
@@ -283,7 +283,7 @@ async function postFollowAccept(req, res) {
 
 async function getNotification(req, res) {
     if (!req.isAuthenticated()) {
-        return res.redirect('/');
+        return res.redirect('/login');
     }
 
     try {

@@ -9,18 +9,20 @@
 </head>
 <body>
     <main>
-        <div class="logo">&#64;</div>
-        <h4>Log in with your account</h4>
-        <form action="/login" method="POST" class="login-form">
-            <label for="username" class="hidden-label">Username</label>
-            <input type="text" id="username" name="username" placeholder="Username" required />
-
-            <label for="password" class="hidden-label">Password</label>
-            <input type="password" id="password" name="password" placeholder="Password" required />
-
-            <button type="submit" class="login-btn">Log in</button>
-        </form>
-        <a href="/signup"><strong>Sign up</strong></a>
+        <div class="user-form">
+            <div class="logo">
+                <img src="/assets/logo.svg" alt="" height="64px">
+            </div>
+            <h4>Log in with your account</h4>
+            <form action="/login" method="POST" class="login-form">
+                <label for="username" class="hidden-label">Username</label>
+                <input type="text" id="username" name="username" placeholder="Username" required />
+                <label for="password" class="hidden-label">Password</label>
+                <input type="password" id="password" name="password" placeholder="Password" required />
+                <button type="submit" class="login-btn">Log in</button>
+            </form>
+            <a href="/signup"><strong>Sign up</strong></a>
+        </div>
     </main>
 </body>
 </html>

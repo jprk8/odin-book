@@ -18,7 +18,7 @@ async function handleNewPost(req, res) {
         return res.status(401).send('Not authenticated');
     }
 
-    const { topic, content } = req.body;
+    const { topic, content, redirectUrl } = req.body;
 
     try {
         const rawTopic = topic?.trim();
@@ -45,8 +45,7 @@ async function handleNewPost(req, res) {
         }
         
         await prisma.post.create({ data });
-        console.log('Post created');
-        res.redirect('/');
+        res.redirect(redirectUrl || '/');
     } catch (err) {
         console.error('Error creating post:', err);
         res.status(500).send('An error occurred during post creation');
@@ -144,7 +143,8 @@ async function getPost(req, res) {
                 topic: { select: { id: true, displayTitle: true } },
                 comments: {
                     include: {
-                        author: { select: { id: true, username: true } }
+                        author: { select: { id: true, username: true } },
+                        _count: { select: { likes: true } }
                     },
                     orderBy: { createdAt: 'asc' }
                 },
