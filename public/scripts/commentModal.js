@@ -1,22 +1,51 @@
-const commentDialog = document.getElementById('comment-modal');
+const commentModal = document.getElementById('comment-modal');
+const modalPostId = document.getElementById('modal-postId');
+const modalParentId = document.getElementById('modal-parentId');
+const modalTargetUsername = document.getElementById('modal-target-username');
+const modalTargetContent = document.getElementById('modal-target-content');
+const commentTextarea = document.getElementById('comment-content');
 const replyBtn = document.querySelector('.reply-btn');
 const closeCommentModal = document.querySelector('.close-comment-modal');
 
-replyBtn.addEventListener('click', () => {
-    commentDialog.showModal();
-});
+document.querySelectorAll('.open-comment-modal').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        const postId = btn.dataset.postId;
+        const parentId = btn.dataset.parentId || '';
+        const targetUsername = btn.dataset.targetUsername;
+        const targetContent = btn.dataset.targetContent;
+
+        modalPostId.value = postId;
+        modalParentId.value = parentId;
+        modalTargetUsername.textContent = targetUsername;
+        modalTargetContent.textContent = targetContent;
+        commentTextarea.placeholder = `Reply to ${targetUsername}`;
+
+        commentModal.showModal();
+        commentTextarea.focus();
+    })
+})
 
 closeCommentModal.addEventListener('click', () => {
-    commentDialog.close();
+    commentModal.close();
+});
+
+commentModal.addEventListener('click', (e) => {
+    const rect = commentModal.getBoundingClientRect();
+    const inDialog = (
+      e.clientX >= rect.left &&
+      e.clientX <= rect.right &&
+      e.clientY >= rect.top &&
+      e.clientY <= rect.bottom
+    );
+    if (!inDialog) commentModal.close();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.getElementById('content');
     const autoResize = () => {
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
+        commentTextarea.style.height = 'auto';
+        commentTextarea.style.height = commentTextarea.scrollHeight + 'px';
     };
 
-    textarea.addEventListener('input', autoResize);
+    commentTextarea.addEventListener('input', autoResize);
     autoResize();
 });

@@ -321,7 +321,7 @@ main {
 }
 
 input[id="topic"],
-textarea[id="content"] {
+textarea {
   background-color: transparent;
   outline: none;
   border: none;

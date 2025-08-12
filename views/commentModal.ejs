@@ -7,6 +7,7 @@
                 <img src="/assets/options.svg" alt="" width="24px"/>
             </div>
         </div>
+        <!-- Original Post -->
         <div class="modal-main">
             <div class="modal-main-left">
                 <div class="avatar">
@@ -15,15 +16,16 @@
             </div>
             <div class="modal-main-right">
                 <div class="modal-topic">
-                    <p><strong><%= post.author.username %></strong></p>
+                    <strong><p id="modal-target-username"><%= post.author.username %></p></strong>
                     <% if (post.topic) { %>
                         <span><img src="/assets/right-arrow.svg" alt="" width="20px" /></span>
                         <p><strong><%= post.topic.displayTitle %></strong></p>
                     <% } %>
                 </div>
-                <p class="post-content"><%= post.content %></p>
+                <p class="post-content" id="modal-target-content"><%= post.content %></p>
             </div>
         </div>
+        <!-- User's reply -->
         <div class="modal-main">
             <div class="modal-main-left">
                 <div class="avatar">
@@ -34,8 +36,14 @@
                 <div class="modal-topic">
                     <p><strong><%= user.username %></strong></p>
                 </div>
-                <input type="hidden" name="postId" value="<%= post.id %>">
-                <textarea id="content" name="content" placeholder="Reply to <%= post.author.username %>..." rows="1" maxlength="500"></textarea>
+                <input type="hidden" name="postId" id="modal-postId" value="<%= post.id %>">
+                <input type="hidden" name="parentId" id="modal-parentId" value="">
+                <textarea
+                    id="comment-content"
+                    name="content"
+                    placeholder="Reply to <%= post.author.username %>..."
+                    rows="1"
+                    maxlength="500"></textarea>
             </div>
         </div>
         <div class="modal-footer">

@@ -41,7 +41,11 @@
                         <p class="like-count"><%= post._count.likes %></p>
                     </div>
                     <div class="post-comments">
-                        <button class="comment-btn">
+                        <button
+                            class="comment-btn open-comment-modal"
+                            data-post-id="<%= post.id %>"
+                            data-target-username="<%= post.author.username %>"
+                            data-target-content="<%= post.content %>">
                             <img src="/assets/comment.svg" alt="" width="18px">
                         </button>
                         <p class="comments-count"><%= post.comments.length %></p>
@@ -51,38 +55,17 @@
             <div class="comments">
                 <div class="comments-header">
                     <p><strong>Comments</strong></p>
-                    <button class="reply-btn">Reply</button>
+                    <button
+                        class="reply-btn open-comment-modal"
+                        data-post-id="<%= post.id %>"
+                        data-target-username="<%= post.author.username %>"
+                        data-target-content="<%= post.content %>">
+                        Reply
+                    </button>
                 </div>
-                <% post.comments.forEach((comment) => { %>
-                    <div class="post-block comment">
-                        <div class="post-avatar">
-                            <div class="avatar">
-                                <img src="/assets/default-avatar.jpg" alt="" />
-                            </div>
-                        </div>
-                        <div class="post-main">
-                            <div class="post-header">
-                                <a href="/profile/<%= comment.author.id %>" class="user-link">
-                                    <strong><%= comment.author.username %></strong>
-                                </a>
-                            </div>
-                            <div class="post-content"><%= comment.content %></div>
-                            <div class="post-menu">
-                                <div class="comment-likes" data-comment-id="<%= comment.id %>">
-                                    <button class="comment-like-btn">
-                                        <img src="/assets/heart<%= comment.isLiked ? '-red' : '-light' %>.svg" alt="" width="18px">
-                                    </button>
-                                    <p class="comment-like-count"><%= comment._count.likes %></p>
-                                </div>
-                                <div class="comment-comments">
-                                    <button class="comment-comment-btn">
-                                        <img src="/assets/comment.svg" alt="" width="18px" />
-                                    </button>
-                                    <p class="comment-comments-count">Missing field</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                <% (post.comments || []).forEach(root => { %>
+                    <%- include('partials/comment', { comment: root, post, depth: 0 }) %>
                 <% }) %>
             </div>
         </div>

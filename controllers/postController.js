@@ -62,20 +62,20 @@ async function handleNewComment(req, res) {
         return res.status(401).send('Not authenticated');
     }
 
-    try {
-        const data = {
-            content: req.body.content,
-            author: {
-                connect: { id: req.user.id }
-            },
-            post: {
-                connect: { id: parseInt(req.body.postId) }
-            }
-        };
+    const postId = parseInt(req.body.postId);
+    const parentId = req.body.parentId ? parseInt(req.body.parentId) : null;
 
-        await prisma.comment.create({ data });
+    try {
+        await prisma.comment.create({
+            data: {
+                content: req.body.content,
+                authorId: req.user.id,
+                postId: postId,
+                parentId: parentId
+            }
+        });
         console.log('Comment created');
-        res.redirect(`/posts/${req.body.postId}`);
+        res.redirect(`/posts/${postId}`);
     } catch (err) {
         console.error('Error creating comment:', err);
         res.status(500).json({ error: 'Error creating comment' });
@@ -170,7 +170,7 @@ async function getPost(req, res) {
                 comments: {
                     include: {
                         author: { select: { id: true, username: true } },
-                        _count: { select: { likes: true } },
+                        _count: { select: { likes: true, children: true } },
                         likes: {
                             where: { userId: req.user.id },
                             select: { userId: true },
@@ -191,15 +191,36 @@ async function getPost(req, res) {
         if (!post) return res.status(404).json({ error: 'Post not found' });
 
         const isLiked = post.likes.some(like => like.userId === req.user.id);
-        const commentsWithFlags = post.comments.map((c) => ({
+
+        // const commentsWithFlags = post.comments.map((c) => ({
+        //     ...c,
+        //     isLiked: c.likes.length > 0
+        // }));
+
+        // building comments tree
+        const nodes = post.comments.map(c => ({
             ...c,
-            isLiked: c.likes.length > 0
+            isLiked: c.likes.length > 0,
+            likeCount: c._count.likes,
+            children: []
         }));
+
+        const byId = new Map(nodes.map(c => [c.id, c]));
+        const roots = [];
+
+        for (const c of nodes) {
+            if (c.parentId) {
+                const parent = byId.get(c.parentId);
+                if (parent) parent.children.push(c);
+            } else {
+                roots.push(c);
+            }
+        }
 
         const postView = {
             ...post,
             isLiked,
-            comments: commentsWithFlags
+            comments: roots
         };
 
         res.render('post', { user: req.user, post: postView });

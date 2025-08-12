@@ -1,19 +1,31 @@
-const postDialog = document.getElementById('post-modal');
+const modal = document.getElementById('post-modal');
 const navBtn = document.querySelector('.new-post-btn');
 const closePostModal = document.querySelector('.close-post-modal');
 const redirectUrl = document.getElementById('redirectUrl');
+const textarea = document.getElementById('modal-content');
 
 navBtn.addEventListener('click', () => {
     redirectUrl.value = location.pathname + location.search + location.hash;
-    postDialog.showModal();
+    modal.showModal();
+    textarea.focus();
 });
 
 closePostModal.addEventListener('click', () => {
-    postDialog.close();
+    modal.close();
+});
+
+modal.addEventListener('click', (e) => {
+    const rect = modal.getBoundingClientRect();
+    const inDialog = (
+      e.clientX >= rect.left &&
+      e.clientX <= rect.right &&
+      e.clientY >= rect.top &&
+      e.clientY <= rect.bottom
+    );
+    if (!inDialog) modal.close();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.getElementById('content');
     const autoResize = () => {
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';

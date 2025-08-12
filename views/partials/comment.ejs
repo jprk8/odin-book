@@ -1,0 +1,42 @@
+<div class="post-block comment depth-<%= depth %>">
+    <div class="post-avatar">
+        <div class="avatar">
+            <img src="/assets/default-avatar.jpg" alt="" />
+        </div>
+    </div>
+    <div class="post-main">
+        <div class="post-header">
+            <a href="/profile/<%= comment.author.id %>" class="user-link">
+                <strong><%= comment.author.username %></strong>
+            </a>
+        </div>
+        <div class="post-content"><%= comment.content %></div>
+        <div class="post-menu">
+            <div class="comment-likes" data-comment-id="<%= comment.id %>">
+                <button class="comment-like-btn">
+                    <img src="/assets/heart<%= comment.isLiked ? '-red' : '-light' %>.svg" alt="" width="18px">
+                </button>
+                <p class="comment-like-count"><%= comment._count.likes %></p>
+            </div>
+            <% if (depth === 0) { %>
+                <div class="comment-comments">
+                    <button
+                        class="comment-comment-btn open-comment-modal"
+                        data-post-id="<%= post.id %>"
+                        data-parent-id="<%= comment.id %>"
+                        data-target-username="<%= comment.author.username %>"
+                        data-target-content="<%= comment.content %>">
+                        <img src="/assets/comment.svg" alt="" width="18px" />
+                    </button>
+                    <p class="comment-comments-count"><%= comment.children.length %></p>
+                </div>
+            <% } %>
+        </div>
+
+        <% if (comment.children && comment.children.length) { %>
+            <% comment.children.forEach((child) => { %>
+                <%- include('./comment', { comment: child, post, depth: depth + 1 }) %>
+            <% }) %>
+        <% } %>
+    </div>
+</div>

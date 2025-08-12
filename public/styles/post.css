@@ -59,3 +59,10 @@
     gap: 6px;
     align-items: center;
 }
+
+.depth-1 {
+    /* margin-left: 16px; */
+    margin-left: -36px;
+    border: none;
+    padding-bottom: 0;
+}
