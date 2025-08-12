@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/styles/post.css">
     <script src="/scripts/commentModal.js" defer></script>
     <script src="/scripts/likeBtn.js" defer></script>
+    <script src="/scripts/likeComment.js"></script>
 </head>
 <body>
     <%- include('nav', { page: '' }) %>
@@ -18,7 +19,7 @@
             </div>
         </div>
         <div class="main-content">
-            <div class="post-view" data-post-id="<%= post.id %>">
+            <div class="post-view">
                 <div class="post-view-header">
                     <div class="avatar">
                         <img src="/assets/default-avatar.jpg" alt="" />
@@ -33,7 +34,7 @@
                 </div>
                 <div class="post-view-content"><p><%= post.content %></p></div>
                 <div class="post-view-menu">
-                    <div class="post-likes">
+                    <div class="post-likes" data-post-id="<%= post.id %>">
                         <button class="like-btn">
                             <img src="/assets/heart<%= post.isLiked ? '-red' : '-light' %>.svg" alt="" width="18px">
                         </button>
@@ -53,7 +54,7 @@
                     <button class="reply-btn">Reply</button>
                 </div>
                 <% post.comments.forEach((comment) => { %>
-                    <div class="post-block comment" data-comment-id="<%= comment.id %>">
+                    <div class="post-block comment">
                         <div class="post-avatar">
                             <div class="avatar">
                                 <img src="/assets/default-avatar.jpg" alt="" />
@@ -67,9 +68,9 @@
                             </div>
                             <div class="post-content"><%= comment.content %></div>
                             <div class="post-menu">
-                                <div class="comment-likes">
+                                <div class="comment-likes" data-comment-id="<%= comment.id %>">
                                     <button class="comment-like-btn">
-                                        <img src="/assets/heart-light.svg" alt="" width="18px">
+                                        <img src="/assets/heart<%= comment.isLiked ? '-red' : '-light' %>.svg" alt="" width="18px">
                                     </button>
                                     <p class="comment-like-count"><%= comment._count.likes %></p>
                                 </div>

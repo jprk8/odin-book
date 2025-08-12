@@ -23,7 +23,7 @@
                 <button class="post-btn">Post</button>
             </div>
             <% posts.forEach((post) => { %>
-                <div class="post-block" data-post-id="<%= post.id %>">
+                <div class="post-block">
                     <a href="/posts/<%= post.id %>" class="post-link" aria-label="View post"></a>
                     <div class="post-avatar">
                         <div class="avatar">
@@ -42,7 +42,7 @@
                         </div>
                         <div class="post-content"><%= post.content %></div>
                         <div class="post-menu">
-                            <div class="post-likes">
+                            <div class="post-likes" data-post-id="<%= post.id %>">
                                 <button class="like-btn">
                                     <img src="/assets/heart<%= post.isLiked ? '-red' : '-light' %>.svg" alt="" width="18px">
                                 </button>

@@ -93,38 +93,64 @@ async function postToggleLike(req, res) {
     try {
         const liked = await prisma.postLike.findUnique({
             where: {
-                userId_postId: {
-                    userId,
-                    postId
-                }
+                userId_postId: { userId, postId }
             }
         });
 
         if (liked) {
             await prisma.postLike.delete({
                 where: {
-                    userId_postId: {
-                        userId,
-                        postId
-                    }
+                    userId_postId: { userId, postId }
                 }
             });
         } else {
             await prisma.postLike.create({
-                data: {
-                    userId,
-                    postId
-                }
+                data: { userId, postId }
             });
         }
 
         const likeCount = await prisma.postLike.count({ where: { postId }});
         const isLiked = !liked;
-
         res.json({ likeCount, isLiked });
     } catch (err) {
-        console.error('Error toggling like:', err);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Error liking post:', err);
+        res.status(500).json({ error: 'Error liking post' });
+    }
+}
+
+async function postToggleLikeComment(req, res) {
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const userId = req.user.id;
+    const commentId = parseInt(req.body.commentId);
+    
+    try {
+        const liked = await prisma.commentLike.findUnique({
+            where: {
+                userId_commentId: { userId, commentId }
+            }
+        });
+
+        if (liked) {
+            await prisma.commentLike.delete({
+                where: {
+                    userId_commentId: { userId, commentId }
+                }
+            });
+        } else {
+            await prisma.commentLike.create({
+                data: { userId, commentId }
+            });
+        }
+
+        const likeCount = await prisma.commentLike.count({ where: { commentId }});
+        const isLiked = !liked;
+        res.json({ likeCount, isLiked });
+    } catch (err) {
+        console.error('Error liking comment:', err);
+        res.status(500).json({ error: 'Error liking comment' });
     }
 }
 
@@ -144,15 +170,20 @@ async function getPost(req, res) {
                 comments: {
                     include: {
                         author: { select: { id: true, username: true } },
-                        _count: { select: { likes: true } }
+                        _count: { select: { likes: true } },
+                        likes: {
+                            where: { userId: req.user.id },
+                            select: { userId: true },
+                            take: 1
+                        }
                     },
                     orderBy: { createdAt: 'asc' }
                 },
                 _count: { select: { likes: true, comments: true } },
                 likes: {
-                    include: {
-                        user: { select: { id: true, username: true } }
-                    }
+                    where: { userId: req.user.id },
+                    select: { userId: true },
+                    take: 1
                 }
             }
         });
@@ -160,9 +191,15 @@ async function getPost(req, res) {
         if (!post) return res.status(404).json({ error: 'Post not found' });
 
         const isLiked = post.likes.some(like => like.userId === req.user.id);
+        const commentsWithFlags = post.comments.map((c) => ({
+            ...c,
+            isLiked: c.likes.length > 0
+        }));
+
         const postView = {
             ...post,
             isLiked,
+            comments: commentsWithFlags
         };
 
         res.render('post', { user: req.user, post: postView });
@@ -176,5 +213,6 @@ module.exports = {
     postNewPost: [validateContent, handleNewPost],
     postNewComment: [validateContent, handleNewComment],
     postToggleLike,
+    postToggleLikeComment,
     getPost,
 }
