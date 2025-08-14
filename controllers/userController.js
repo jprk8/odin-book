@@ -1,6 +1,8 @@
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const crypto = require('node:crypto');
 const passport = require('passport');
+const { gravatarUrl } = require('../utils/gravatar');
 const { PrismaClient } = require('../generated/prisma');
 const prisma = new PrismaClient();
 
@@ -18,6 +20,7 @@ const validateUser = [
         .isLength({ min: 1, max: 40 }).withMessage(`Last name ${lengthErr}`)
         .customSanitizer((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()),
     body('username').trim()
+        .customSanitizer((username) => username.toLowerCase())
         .isAlphanumeric().withMessage(`Username ${alphaNumErr}`)
         .isLength({ min: 1, max: 40 }).withMessage(`Username ${lengthErr}`)
         .custom(async (value) => {
@@ -29,10 +32,26 @@ const validateUser = [
             }
             return true;
         }),
+    body('email').optional({ checkFalsy: true }).trim()
+        .isEmail().withMessage('Please enter a valid email address')
+        .customSanitizer((email) => email.toLowerCase())
+        .custom(async (value) => {
+            const user = await prisma.user.findUnique({
+                where: { email: value }
+            });
+            if (user) {
+                throw new Error('Email is already in use');
+            }
+            return true;
+        }),
     body('confirmPassword')
         .custom((value, { req }) => value === req.body.password)
         .withMessage('Passwords do not match')
 ]
+
+function sha265Hex(email) {
+    return crypto.createHash('sha256').update(email).digest('hex');
+}
 
 async function getPosts(req) {
     const posts = await prisma.post.findMany({
@@ -96,7 +115,7 @@ async function getIndex(req, res) {
 
     try {
         const posts = await getPosts(req);
-        res.render('index', { user: req.user, posts: posts });
+        res.render('index', { user: req.user, posts: posts, gravatarUrl });
     } catch (err) {
         console.error('Error loading posts', err);
         res.status(500).json({ error: 'Failed to load posts' });
@@ -149,15 +168,17 @@ async function handlePostSignup(req, res) {
 
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const email = req.body.email;
+        const gravatar = email ? sha265Hex(email) : null;
         await prisma.user.create({
             data: {
                 username: req.body.username,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName || null,
                 password: hashedPassword,
-                profile: {
-                    create: {}
-                }
+                email,
+                gravatar,
+                profile: { create: {} }
             }
         });
         console.log('Registration success');
@@ -203,7 +224,7 @@ async function getProfile(req, res) {
                 status: true
             }
         });
-        res.render('profile', { user: req.user, userData, relationship });
+        res.render('profile', { user: req.user, userData, relationship, gravatarUrl });
     } catch (err) {
         console.error('Error getting profile', err);
         res.status(500).send('An error occurred while loading profile');

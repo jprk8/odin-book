@@ -85,6 +85,8 @@ model User {
   password     String        @db.VarChar(255)
   firstName    String        @db.VarChar(40)
   lastName     String?       @db.VarChar(40)
+  email        String?       @unique @db.VarChar(255)
+  gravatar     String?       @db.Char(64)
   posts        Post[]
   comments     Comment[]
   profile      Profile?

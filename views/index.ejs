@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="new-post-block">
                 <div class="avatar">
-                    <img src="/assets/default-avatar.jpg" alt="" >
+                    <img src="<%= gravatarUrl(user.gravatar) %>" alt="avatar" >
                 </div>
                 <input type="text" id="trigger-input" placeholder="What's new?">
                 <button class="post-btn">Post</button>
@@ -27,7 +27,7 @@
                     <a href="/posts/<%= post.id %>" class="post-link" aria-label="View post"></a>
                     <div class="post-avatar">
                         <div class="avatar">
-                             <img src="/assets/default-avatar.jpg" alt="" />
+                             <img src="<%= gravatarUrl(post.author.gravatar) %>" alt="" />
                         </div>
                     </div>
                     <div class="post-main">

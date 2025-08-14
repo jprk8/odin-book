@@ -22,7 +22,7 @@
             <div class="post-view">
                 <div class="post-view-header">
                     <div class="avatar">
-                        <img src="/assets/default-avatar.jpg" alt="" />
+                        <img src="<%= gravatarUrl(post.author.gravatar, 84) %>" alt="avatar" />
                     </div>
                     <a href="/profile/<%= post.author.id %>" class="user-link">
                         <p><strong><%= post.author.username %></strong></p>
@@ -48,7 +48,7 @@
                             data-target-content="<%= post.content %>">
                             <img src="/assets/comment.svg" alt="" width="18px">
                         </button>
-                        <p class="comments-count"><%= post.comments.length %></p>
+                        <p class="comments-count"><%= post._count.comments %></p>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                 </div>
 
                 <% (post.comments || []).forEach(root => { %>
-                    <%- include('partials/comment', { comment: root, post, depth: 0 }) %>
+                    <%- include('partials/comment', { comment: root, post, depth: 0, gravatarUrl }) %>
                 <% }) %>
             </div>
         </div>

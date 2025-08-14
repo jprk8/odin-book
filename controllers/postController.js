@@ -1,6 +1,7 @@
 const { PrismaClient } = require('../generated/prisma');
 const prisma = new PrismaClient();
 const { body, validationResult } = require('express-validator');
+const { gravatarUrl } = require('../utils/gravatar');
 
 const validateContent = [
     body('content').trim()
@@ -165,11 +166,11 @@ async function getPost(req, res) {
         const post = await prisma.post.findUnique({
             where: { id: postId },
             include: {
-                author: { select: { id: true, username: true } },
+                author: { select: { id: true, username: true, gravatar: true } },
                 topic: { select: { id: true, displayTitle: true } },
                 comments: {
                     include: {
-                        author: { select: { id: true, username: true } },
+                        author: { select: { id: true, username: true, gravatar: true } },
                         _count: { select: { likes: true, children: true } },
                         likes: {
                             where: { userId: req.user.id },
@@ -223,7 +224,7 @@ async function getPost(req, res) {
             comments: roots
         };
 
-        res.render('post', { user: req.user, post: postView });
+        res.render('post', { user: req.user, post: postView, gravatarUrl });
     } catch (err) {
         console.error('Error fetching post:', err);
         return res.status(500).json({ error: 'Error fetching post' });
