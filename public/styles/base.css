@@ -21,8 +21,8 @@ body {
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
-  min-height: 100vh;
-  /* display: flex; */
+  overflow-y: scroll;
+  /* min-height: 100dvh; */
 }
 
 img, picture, video, canvas, svg {
@@ -81,6 +81,14 @@ textarea {
   min-height: 24px;
 }
 
+button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
 button:hover {
   cursor: pointer;
 }
@@ -88,6 +96,7 @@ button:hover {
 button:active,
 .switch:active {
   transform: scale(0.9);
+  transition: transform 0.1s ease-in;
 }
 
 main {
@@ -95,7 +104,7 @@ main {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 20px 0;
+  /* padding: 20px 0; */
   min-height: 100vh;
 }
 
@@ -111,7 +120,7 @@ main {
 }
 
 .main-header {
-  position: sticky;
+  position: fixed;
   top: 20px;
   background-color: var(--bg-color);
   z-index: 9999;
@@ -142,9 +151,10 @@ main {
     background-color: var(--box-color);
     width: 100%;
     max-width: 640px;
-    border-radius: 30px;
+    border-radius: 30px 30px 0 0;
     border: 1px solid var(--border-color);
-    margin: 20px 0;
+    margin: 68px 0 0 0;
+    min-height: calc(100vh - 68px);
 }
 
 .post-menu {
@@ -161,17 +171,6 @@ main {
     display: flex;
     align-items: center;
     gap: 6px;
-}
-
-.like-btn,
-.comment-btn,
-.comment-like-btn,
-.comment-comment-btn {
-    background-color: transparent;
-    outline: none;
-    border: none;
-    padding: 0;
-    margin: 0;
 }
 
 .post-btn {

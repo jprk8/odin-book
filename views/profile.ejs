@@ -50,6 +50,21 @@
                     </form>
                 <% } %>
             </div>
+            <div class="profile-tabs">
+                <button class="profile-threads active-tab">Threads</button>
+                <button class="profile-replies">Replies</button>
+                <button class="profile-saved">Saved</button>
+            </div>
+            <div class="new-post-block">
+                <div class="avatar">
+                    <img src="<%= gravatarUrl(user.gravatar) %>" alt="avatar" >
+                </div>
+                <input type="text" id="trigger-input" placeholder="What's new?">
+                <button class="post-btn">Post</button>
+            </div>
+            <% userData.posts.forEach((post) => { %>
+                <%- include('partials/post-block', { post }) %>
+            <% }) %>
         </div>
     </main>
 </body>

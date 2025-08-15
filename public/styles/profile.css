@@ -1,7 +1,14 @@
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 0;
+}
+
 .profile,
 .profile-menu,
 .profile-links {
-    padding: 24px;
+    padding: 0 24px;
 }
 
 .profile {
@@ -58,4 +65,25 @@
 
 .unfollow {
     color: rgb(230, 17, 17);
+}
+
+.profile-tabs {
+    display: flex;
+}
+
+.profile-tabs button {
+    color: #777;
+    font-weight: 600;
+    padding: 10px 0;
+    flex-grow: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-tabs .active-tab {
+    color: inherit;
+    border-bottom: 1px solid var(--text-color);
+}
+
+.new-post-block {
+    padding: 0 24px;
 }

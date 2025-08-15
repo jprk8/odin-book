@@ -25,7 +25,8 @@
                         data-post-id="<%= post.id %>"
                         data-parent-id="<%= comment.id %>"
                         data-target-username="<%= comment.author.username %>"
-                        data-target-content="<%= comment.content %>">
+                        data-target-content="<%= comment.content %>"
+                        data-target-gravatar="<%= comment.author.gravatar %>">
                         <img src="/assets/comment.svg" alt="" width="18px" />
                     </button>
                     <p class="comment-comments-count"><%= comment.children.length %></p>

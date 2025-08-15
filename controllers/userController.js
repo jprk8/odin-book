@@ -129,7 +129,7 @@ async function getFollowingIndex(req, res) {
 
     try {
         const posts = await getFollowingPosts(req);
-        res.render('index', { user: req.user, posts: posts, following: true });
+        res.render('index', { user: req.user, posts: posts, following: true, gravatarUrl });
     } catch (err) {
         console.error('Error loading following posts:', err);
         res.status(500).json({ error: 'Failed to load following posts ' });
@@ -198,7 +198,17 @@ async function getProfile(req, res) {
         const userData = await prisma.user.findUnique({
             where: { id: parseInt(req.params.id) },
             include: {
-                posts: true,
+                posts: {
+                    include: {
+                        author: true,
+                        _count: { select: { likes: true, comments: true} },
+                        likes: {
+                            where: { userId: req.user?.id || -1 },
+                            select: { id: true }
+                        }
+                    },
+                    orderBy: { createdAt: 'asc' }
+                },
                 profile: true,
                 comments: true,
                 followers: {
@@ -213,6 +223,12 @@ async function getProfile(req, res) {
                 commentLikes: true
             }
         });
+
+        // const userDataWithFlag = userData.posts.map((post) => ({
+        //     ...post,
+        //     isLiked: post.likes.length > 0
+        // }));
+
         const relationship = await prisma.follow.findUnique({
             where: {
                 followerId_followingId: {
@@ -317,7 +333,7 @@ async function getNotification(req, res) {
                 follower: true
             }
         });
-        res.render('notification', { user: req.user, requests: requests });
+        res.render('notification', { user: req.user, requests: requests, gravatarUrl });
     } catch (err) {
         console.error('Error fetching follow requests:, err');
         res.status(500).send('An error occurred during loading follow requests');

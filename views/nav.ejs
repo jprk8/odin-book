@@ -44,7 +44,11 @@
     .nav-menu > a:hover {
         background-color: rgb(255, 255, 255, 0.08);
         border-radius: 12px;
-        /* transition: background-color 0.1s ease-in; */
+    }
+
+    nav a:active {
+        transform: scale(0.9);
+        transition: transform 0.1s ease-in;
     }
 
 </style>
@@ -60,9 +64,9 @@
         <a href="/search">
             <img src="/assets/<%= page === "search" ? "search-fill" : "search" %>.svg" alt="" height="24px" />
         </a>
-        <div class="new-post-btn">
+        <button class="new-post-btn">
             <img src="/assets/add.svg" alt="" height="24px" width="auto">
-        </div>
+        </button>
         <a href="/notification" class="notification-btn">
             <img src="/assets/<%= page === "heart" ? "heart-fill" : "heart" %>.svg" alt="" height="24px" />
         </a>
