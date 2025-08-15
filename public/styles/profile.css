@@ -79,6 +79,14 @@
     border-bottom: 1px solid var(--border-color);
 }
 
+.profile-tabs button:active {
+    transform: scale(1);
+}
+
+.profile-tabs button:active .tab-label {
+    filter: brightness(0.75);
+}
+
 .profile-tabs .active-tab {
     color: inherit;
     border-bottom: 1px solid var(--text-color);
@@ -86,4 +94,31 @@
 
 .new-post-block {
     padding: 0 24px;
+    margin-bottom: 16px;
+}
+
+.post-comment .post-block:nth-of-type(2) {
+    border-top: none;
+    padding-top: 0;
+}
+
+.spacer {
+    margin-bottom: -16px;
+}
+
+.post-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+}
+.comment-pipe {
+    width: 1px;
+    border: 1px solid var(--border-color);
+    flex-grow: 1;
+}
+
+.replies-container {
+    display: none;
 }

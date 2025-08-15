@@ -4,6 +4,9 @@
         <div class="avatar">
                 <img src="<%= gravatarUrl(post.author.gravatar) %>" alt="" />
         </div>
+        <% if (locals.pipe) { %>
+            <div class="comment-pipe"></div>
+        <% } %>
     </div>
     <div class="post-main">
         <div class="post-header">

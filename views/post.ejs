@@ -45,7 +45,8 @@
                             class="comment-btn open-comment-modal"
                             data-post-id="<%= post.id %>"
                             data-target-username="<%= post.author.username %>"
-                            data-target-content="<%= post.content %>">
+                            data-target-content="<%= post.content %>"
+                            data-target-gravatar="<%= gravatarUrl(post.author.gravatar) %>">
                             <img src="/assets/comment.svg" alt="" width="18px">
                         </button>
                         <p class="comments-count"><%= post._count.comments %></p>
@@ -59,7 +60,8 @@
                         class="reply-btn open-comment-modal"
                         data-post-id="<%= post.id %>"
                         data-target-username="<%= post.author.username %>"
-                        data-target-content="<%= post.content %>">
+                        data-target-content="<%= post.content %>"
+                        data-target-gravatar="<%= gravatarUrl(post.author.gravatar) %>">
                         Reply
                     </button>
                 </div>

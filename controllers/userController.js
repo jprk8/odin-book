@@ -201,16 +201,34 @@ async function getProfile(req, res) {
                 posts: {
                     include: {
                         author: true,
-                        _count: { select: { likes: true, comments: true} },
+                        _count: { select: { likes: true, comments: true } },
                         likes: {
-                            where: { userId: req.user?.id || -1 },
-                            select: { id: true }
+                            where: { userId: req.user?.id ?? -1 },
+                            select: { id: true },
+                            take: 1,
                         }
                     },
-                    orderBy: { createdAt: 'asc' }
+                    orderBy: { createdAt: 'desc' }
                 },
                 profile: true,
-                comments: true,
+                comments: {
+                    include: {
+                        author: true,
+                        parent: {
+                            include: {
+                                author: true,
+                                _count: { select: { likes: true, children: true } }
+                            }
+                        },
+                        post: {
+                            include: {
+                                author: true,
+                                _count: { select: { likes: true, comments: true } }
+                            },
+                        },
+                        _count: { select: { children: true } }
+                    }
+                },
                 followers: {
                     include: { follower: true },
                     where: { status: 'ACCEPTED' }
@@ -224,10 +242,17 @@ async function getProfile(req, res) {
             }
         });
 
-        // const userDataWithFlag = userData.posts.map((post) => ({
-        //     ...post,
-        //     isLiked: post.likes.length > 0
-        // }));
+        if (!userData) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const userDataWithFlag = {
+            ...userData,
+            posts: userData.posts.map((post) => ({
+                ...post,
+                isLiked: post.likes.length > 0,
+            }))
+        };
 
         const relationship = await prisma.follow.findUnique({
             where: {
@@ -240,7 +265,7 @@ async function getProfile(req, res) {
                 status: true
             }
         });
-        res.render('profile', { user: req.user, userData, relationship, gravatarUrl });
+        res.render('profile', { user: req.user, userData: userDataWithFlag, relationship, gravatarUrl });
     } catch (err) {
         console.error('Error getting profile', err);
         res.status(500).send('An error occurred while loading profile');

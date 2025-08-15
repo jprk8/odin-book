@@ -6,6 +6,8 @@
     <title>Profile</title>
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/profile.css">
+    <script src="/scripts/likeBtn.js" defer></script>
+    <script src="/scripts/profileTab.js" defer></script>
 </head>
 <body>
     <%- include('nav', { page: (user.id === userData.id) ? 'user' : '' }) %>
@@ -51,20 +53,33 @@
                 <% } %>
             </div>
             <div class="profile-tabs">
-                <button class="profile-threads active-tab">Threads</button>
-                <button class="profile-replies">Replies</button>
-                <button class="profile-saved">Saved</button>
+                <button id="threads-tab" class="active-tab"><span class="tab-label">Threads</span></button>
+                <button id="replies-tab"><span class="tab-label">Replies</span></button>
+                <button id="saved-tab"><span class="tab-label">Saved</span></button>
             </div>
-            <div class="new-post-block">
-                <div class="avatar">
-                    <img src="<%= gravatarUrl(user.gravatar) %>" alt="avatar" >
+            <div class="posts-container">
+                <% if (user.id === userData.id) { %>
+                    <div class="new-post-block">
+                        <div class="avatar">
+                            <img src="<%= gravatarUrl(user.gravatar) %>" alt="avatar" >
+                        </div>
+                        <input type="text" id="trigger-input" placeholder="What's new?">
+                        <button class="post-btn">Post</button>
+                    </div>
+                <% } else { %> 
+                    <div class="spacer"></div> 
+                <% } %>
+                <div class="threads-container">
+                    <% userData.posts.forEach((post) => { %>
+                        <%- include('partials/postBlock', { post }) %>
+                    <% }) %>
                 </div>
-                <input type="text" id="trigger-input" placeholder="What's new?">
-                <button class="post-btn">Post</button>
+                <div class="replies-container">
+                    <% userData.comments.forEach((comment) => { %>
+                        <%- include('partials/postComment', { comment }) %>
+                    <% }) %>
+                </div>
             </div>
-            <% userData.posts.forEach((post) => { %>
-                <%- include('partials/post-block', { post }) %>
-            <% }) %>
         </div>
     </main>
 </body>

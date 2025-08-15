@@ -2,7 +2,7 @@
   --bg-color: #0a0a0a;
   --text-color: #f3f5f7;
   --box-color: #181818;
-  --border-color: #333;
+  --border-color: rgb(243, 245, 247, 0.15);
   font-size: 15px;
 }
 
@@ -215,6 +215,10 @@ main {
 
 .post-block:hover {
   background-color: rgba(255, 255, 255, 0.03);
+}
+
+.post-block:active {
+  background-color: var(--box-color);
 }
 
 .post-main {

@@ -5,9 +5,7 @@ const modalTargetUsername = document.getElementById('modal-target-username');
 const modalTargetContent = document.getElementById('modal-target-content');
 const modalGravatar = document.getElementById('modal-gravatar');
 const commentTextarea = document.getElementById('comment-content');
-const replyBtn = document.querySelector('.reply-btn');
 const closeCommentModal = document.querySelector('.close-comment-modal');
-const { gravatarUrl } = require('../../utils/gravatar');
 
 document.querySelectorAll('.open-comment-modal').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -21,7 +19,7 @@ document.querySelectorAll('.open-comment-modal').forEach((btn) => {
         modalParentId.value = parentId;
         modalTargetUsername.textContent = targetUsername;
         modalTargetContent.textContent = targetContent;
-        modalGravatar.src = gravatarUrl(targetGravatar);
+        modalGravatar.src = targetGravatar;
         commentTextarea.placeholder = `Reply to ${targetUsername}`;
 
         commentModal.showModal();
