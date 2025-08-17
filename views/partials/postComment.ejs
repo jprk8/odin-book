@@ -1,10 +1,10 @@
 <div class="post-comment">
     <!-- Original post -->
     <% if (comment.parent) { %>
-        <%- include('postBlock', { post: comment.parent, pipe: true }) %>
+        <%- include('postBlock', { post: comment.parent, pipe: true, isComment: true }) %>
     <% } else { %>
         <%- include('postBlock', { post: comment.post, pipe: true }) %>
     <% } %>
     <!-- Profile replies -->
-    <%- include('postBlock', { post: comment }) %>
+    <%- include('postBlock', { post: comment, isComment: true }) %>
 </div>

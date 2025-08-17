@@ -217,17 +217,33 @@ async function getProfile(req, res) {
                         parent: {
                             include: {
                                 author: true,
-                                _count: { select: { likes: true, children: true } }
+                                _count: { select: { likes: true, children: true } },
+                                likes: {
+                                    where: { userId: req.user?.id ?? -1 },
+                                    select: { id: true },
+                                    take: 1,
+                                }
                             }
                         },
                         post: {
                             include: {
                                 author: true,
-                                _count: { select: { likes: true, comments: true } }
+                                _count: { select: { likes: true, comments: true } },
+                                likes: {
+                                    where: { userId: req.user?.id ?? -1 },
+                                    select: { id: true },
+                                    take: 1,
+                                }
                             },
                         },
-                        _count: { select: { children: true } }
-                    }
+                        _count: { select: { likes: true, children: true } },
+                        likes: {
+                            where: { userId: req.user?.id ?? -1 },
+                            select: { id: true },
+                            take: 1
+                        }
+                    },
+                    orderBy: { createdAt: 'desc' }
                 },
                 followers: {
                     include: { follower: true },
@@ -251,6 +267,22 @@ async function getProfile(req, res) {
             posts: userData.posts.map((post) => ({
                 ...post,
                 isLiked: post.likes.length > 0,
+            })),
+            comments: userData.comments.map((comment) => ({
+                ...comment,
+                isLiked: comment.likes?.length > 0,
+                parent: comment.parent
+                    ? {
+                        ...comment.parent,
+                        isLiked: comment.parent.likes?.length > 0
+                    }
+                    : null,
+                post: comment.post
+                    ? {
+                        ...comment.post,
+                        isLiked: comment.post.likes?.length > 0
+                    }
+                    : null
             }))
         };
 

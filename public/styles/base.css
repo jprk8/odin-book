@@ -213,14 +213,6 @@ main {
     z-index: 2;
 }
 
-.post-block:hover {
-  background-color: rgba(255, 255, 255, 0.03);
-}
-
-.post-block:active {
-  background-color: var(--box-color);
-}
-
 .post-main {
     display: flex;
     flex-direction: column;
@@ -230,6 +222,21 @@ main {
 .post-header {
     display: flex;
     align-items: center;
+}
+
+.post-topic {
+  flex-grow: 1;
+}
+
+.post-options {
+  justify-self: end;
+  padding: 0 10px;
+}
+
+.post-options:hover {
+  background-color: rgb(255, 255, 255, 0.08);
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
 }
 
 .post-content {

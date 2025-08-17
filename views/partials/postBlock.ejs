@@ -1,5 +1,5 @@
 <div class="post-block">
-    <a href="/posts/<%= post.id %>" class="post-link" aria-label="View post"></a>
+    <a href="/posts/<%= (locals.isComment) ? post.postId : post.id %>" class="post-link" aria-label="View post"></a>
     <div class="post-avatar">
         <div class="avatar">
                 <img src="<%= gravatarUrl(post.author.gravatar) %>" alt="" />
@@ -14,23 +14,33 @@
                 <strong><%= post.author.username %></strong>
             </a>
             <% if (post.topic) { %>
-                <span><img src="/assets/right-arrow.svg" alt="" width="20px" /></span>
-                <p><strong><%= post.topic.displayTitle %></strong></p>
+                <span><img src="/assets/right-arrow.svg" alt="" width="18px" /></span>
+                <p class="post-topic"><strong><%= post.topic.displayTitle %></strong></p>
+            <% } else { %>
+                <p class="post-topic"></p>
             <% } %>
+            <button class="post-options">
+                <img src="/assets/dots.svg" alt="more options" width="18px">
+            </button>
         </div>
         <div class="post-content"><%= post.content %></div>
         <div class="post-menu">
-            <div class="post-likes" data-post-id="<%= post.id %>">
-                <button class="like-btn">
-                    <img src="/assets/heart<%= post.isLiked ? '-red' : '-light' %>.svg" alt="" width="18px">
+            <div class="post-likes" data-post-id="<%= post.id %>" data-comment-id="<%= post.id %>">
+                <button class="<%= (locals.isComment) ? 'comment-like-btn' : 'like-btn' %>">
+                    <img
+                        src="/assets/heart<%= (post.isLiked) ? '-red' : '-light' %>.svg"
+                        alt="like button"
+                        width="18px" />
                 </button>
-                <p class="like-count"><%= post._count.likes %></p>
+                <p class="<%= (locals.isComment) ? 'comment-like-count' : 'like-count'%>">
+                    <%= post._count.likes %>
+                </p>
             </div>
             <div class="post-comments">
                 <button class="comment-btn">
                     <img src="/assets/comment.svg" alt="" width="18px" />
                 </button>
-                <p class="comments-count"><%= post._count.comments %></p>
+                <p class="comments-count"><%= (locals.isComment) ? post._count.children : post._count.comments %></p>
             </div>
         </div>
     </div>
