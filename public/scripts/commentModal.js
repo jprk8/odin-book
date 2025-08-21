@@ -5,7 +5,12 @@ const modalTargetUsername = document.getElementById('modal-target-username');
 const modalTargetContent = document.getElementById('modal-target-content');
 const modalGravatar = document.getElementById('modal-gravatar');
 const commentTextarea = document.getElementById('comment-content');
-const closeCommentModal = document.querySelector('.close-comment-modal');
+const closeModalBtn = document.querySelector('.close-comment-modal');
+
+function closeCommentModal() {
+    commentModal.classList.remove('is-open');
+    commentModal.close();
+}
 
 document.querySelectorAll('.open-comment-modal').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -23,23 +28,20 @@ document.querySelectorAll('.open-comment-modal').forEach((btn) => {
         commentTextarea.placeholder = `Reply to ${targetUsername}`;
 
         commentModal.showModal();
+        commentModal.classList.add('is-open')
         commentTextarea.focus();
     })
-})
-
-closeCommentModal.addEventListener('click', () => {
-    commentModal.close();
 });
 
+closeModalBtn.addEventListener('click', closeCommentModal);
+
 commentModal.addEventListener('click', (e) => {
-    const rect = commentModal.getBoundingClientRect();
-    const inDialog = (
-      e.clientX >= rect.left &&
-      e.clientX <= rect.right &&
-      e.clientY >= rect.top &&
-      e.clientY <= rect.bottom
-    );
-    if (!inDialog) commentModal.close();
+    if (e.target === commentModal) closeCommentModal();
+});
+
+commentModal.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    closeCommentModal();
 });
 
 document.addEventListener('DOMContentLoaded', () => {

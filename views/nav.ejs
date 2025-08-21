@@ -15,15 +15,7 @@
         flex-direction: column;
         align-items: center;
         gap: 16px;
-        /* visibility: hidden;
-        opacity: 0.7;
-        transition: opacity 0.2s ease-in; */
     }
-
-    /* .nav-menu.loaded {
-        visibility: visible;
-        opacity: 1;
-    } */
 
     .new-post-btn {
         background-color: rgb(255, 255, 255, 0.08);
@@ -51,6 +43,61 @@
         transition: transform 0.1s ease-in;
     }
 
+    .drawer-container {
+        display: flex;
+        place-items: center;
+        position: relative;
+    }
+
+    button.drawer-btn {
+        filter: brightness(0.5);
+    }
+
+    button.drawer-btn:hover {
+        filter: brightness(1);
+    }
+
+    .drawer {
+        opacity: 0;
+        transform: scale(0.2);
+        position: absolute;
+        bottom: 34px;
+        left: -10px;
+        transform-origin: left bottom;
+
+        display: flex;
+        flex-direction: column;
+        background-color: #242424;
+        width: 240px;
+        font-weight: 600;
+        border-radius: 20px;
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    .drawer.open {
+        opacity: 1;
+        transform: scale(1);
+        transition: transform 150ms ease;
+    }
+
+    .drawer-menu {
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .drawer-menu.logout {
+        color: var(--red);
+    }
+
+    .drawer-menu:hover {
+        background-color: rgb(255, 255, 255, 0.04);
+    }
+
+    .drawer-menu:active {
+        transform: scale(0.95);
+    }
+
 </style>
 
 <nav>
@@ -74,16 +121,21 @@
             <img src="/assets/<%= page === "user" ? "user-fill" : "user" %>.svg" alt="" height="24px" />
         </a>
     </div>
-    <div class="drawer">
-        <img src="/assets/drawer.svg" alt="" height="24px">
+    <div class="drawer-container">
+        <button class="drawer-btn">
+            <img src="/assets/drawer.svg" alt="" height="24px">
+        </button>
+        <div class="drawer">
+            <a href="/" class="drawer-menu">Saved</a>
+            <a href="/" class="drawer-menu">Liked</a>
+            <a href="https://github.com/jprk8/odin-book" class="drawer-menu" target="_blank" rel="noopener noreferrer">
+                Report a problem
+            </a>
+            <a href="/logout" class="drawer-menu logout">Log out</a>
+        </div>
     </div>
 </nav>
 
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelector('.nav-menu').classList.add('loaded');
-    });
-</script> -->
-
 <%- include('postModal') %>
 <script src="/scripts/postModal.js" defer></script>
+<script src="/scripts/drawer.js" defer></script>

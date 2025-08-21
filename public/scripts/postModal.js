@@ -4,25 +4,27 @@ const closePostModal = document.querySelector('.close-post-modal');
 const redirectUrl = document.getElementById('redirectUrl');
 const textarea = document.getElementById('modal-content');
 
+function closeModal() {
+    modal.classList.remove('is-open');
+    modal.close();
+}
+
 navBtn.addEventListener('click', () => {
     redirectUrl.value = location.pathname + location.search + location.hash;
     modal.showModal();
+    modal.classList.add('is-open');
     textarea.focus();
 });
 
-closePostModal.addEventListener('click', () => {
-    modal.close();
-});
+closePostModal.addEventListener('click', closeModal);
 
 modal.addEventListener('click', (e) => {
-    const rect = modal.getBoundingClientRect();
-    const inDialog = (
-      e.clientX >= rect.left &&
-      e.clientX <= rect.right &&
-      e.clientY >= rect.top &&
-      e.clientY <= rect.bottom
-    );
-    if (!inDialog) modal.close();
+    if (e.target === modal) closeModal();
+});
+
+modal.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    closeModal();
 });
 
 document.addEventListener('DOMContentLoaded', () => {

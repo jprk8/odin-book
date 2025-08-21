@@ -56,15 +56,17 @@
             <div class="profile-tabs">
                 <button id="threads-tab" class="active-tab"><span class="tab-label">Threads</span></button>
                 <button id="replies-tab"><span class="tab-label">Replies</span></button>
-                <button id="saved-tab"><span class="tab-label">Saved</span></button>
+                <% if (user.id === userData.id) { %>
+                    <button id="saved-tab"><span class="tab-label">Saved</span></button>
+                <% } %>
             </div>
             <div class="posts-container">
                 <% if (user.id === userData.id) { %>
                     <div class="new-post-block">
                         <div class="avatar">
-                            <img src="<%= gravatarUrl(user.gravatar) %>" alt="avatar" >
+                            <img src="<%= gravatarUrl(user.gravatar) %>" alt="avatar" />
                         </div>
-                        <input type="text" id="trigger-input" placeholder="What's new?">
+                        <input type="text" id="trigger-input" placeholder="What's new?" />
                         <button class="post-btn">Post</button>
                     </div>
                 <% } else { %> 

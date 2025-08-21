@@ -3,6 +3,7 @@
   --text-color: #f3f5f7;
   --box-color: #181818;
   --border-color: rgb(243, 245, 247, 0.15);
+  --red: rgb(255, 48, 64);
   font-size: 15px;
 }
 
@@ -262,11 +263,6 @@ main {
   border-radius: 24px;
 }
 
-#post-modal::backdrop,
-#comment-modal::backdrop {
-  background-color: rgb(0, 0, 0, 0.6);
-}
-
 #post-modal form,
 #comment-modal form {
   display: flex;
@@ -344,4 +340,69 @@ textarea {
   justify-content: space-between;
   align-items: center;
   color: #777;
+}
+
+dialog {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+dialog.is-open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+dialog::backdrop,
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+}
+
+dialog.is-open::backdrop,
+dialog.is-open::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+dialog.closing {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+dialog.closing::backdrop {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Turn off smooth scrolling if you’re using it anywhere */
+  html { scroll-behavior: auto; }
+
+  /* Kill modal transitions/animations */
+  #post-modal,
+  #comment-modal,
+  #post-modal::backdrop,
+  #comment-modal::backdrop {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Avoid any movement */
+  #post-modal,
+  #comment-modal {
+    transform: none !important;
+    opacity: 1 !important;            /* when shown */
+  }
+
+  /* Backdrop: jump straight to final color when open */
+  #post-modal.is-open::backdrop,
+  #comment-modal.is-open::backdrop {
+    background-color: rgba(0,0,0,0.6) !important;
+  }
+
+  /* Closing state shouldn’t animate either */
+  dialog.closing,
+  dialog.closing::backdrop {
+    transition: none !important;
+    animation: none !important;
+  }
 }
